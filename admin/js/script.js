@@ -1,7 +1,7 @@
 document.getElementById('deleteLink').addEventListener('click', function (e) {
     e.preventDefault(); // Prevent the default link behavior
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'delete.html', true); // Request content from delete.php
+    xhr.open('GET', 'delete.php', true); // Request content from delete.php
     xhr.onload = function () {
         if (xhr.status === 200) {
             document.getElementById('containerArea').innerHTML = xhr.responseText; // Load content into contentArea div
@@ -75,7 +75,7 @@ function attachFormSubmitHandler(actionUrl) {
 document.getElementById('con').addEventListener('click', function (e) {
     e.preventDefault(); // Prevent the default link behavior
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'consultancy.html', true); // Request content from consultancy.html
+    xhr.open('GET', 'consultancy.php', true); // Request content from consultancy.html
     xhr.onload = function () {
         if (xhr.status === 200) {
             document.getElementById('containerArea').innerHTML = xhr.responseText; // Load content into contentArea div
