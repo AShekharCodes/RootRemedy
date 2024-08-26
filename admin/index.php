@@ -19,6 +19,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <title>Root Remedy - Dashboard</title>
 
     <!-- Custom fonts for this template-->
+    
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -88,7 +89,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     </svg>
                     <span>Add Medicine</span></a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="#" id="deleteLink">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
@@ -99,7 +100,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <span>Delete</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="#" id="con">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
@@ -110,8 +111,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <span>Consultancy Requests</span></a>
             </li>
             <!-- Where the content from delete.php will be loaded -->
-            
-            
+
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
@@ -137,7 +138,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) --> 
+            <!-- Sidebar Toggler (Sidebar) -->
 
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -191,41 +192,42 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-        <img class="img-profile rounded-circle" src="\project\RootRemedy\RootRemedy\assets\img\logo2.jfif">
-    </a>
-    <!-- Dropdown - User Information -->
-    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-        aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-            Profile
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-            Settings
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-            Activity Log
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="javascript:void(0);" onclick="confirmLogout();">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-        </a>
-    </div>
-</li>
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+                                <img class="img-profile rounded-circle"
+                                    src="\project\RootRemedy\RootRemedy\assets\img\logo2.jfif">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmLogout();">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
 
-<script>
-function confirmLogout() {
-    if (confirm("Are you sure you want to logout?")) {
-        window.location.href = "logout.php";
-    }
-}
-</script>
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    window.location.href = "logout.php";
+                                }
+                            }
+                        </script>
 
                     </ul>
 
@@ -246,6 +248,7 @@ function confirmLogout() {
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
+                        <!-- Plants Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
@@ -253,9 +256,11 @@ function confirmLogout() {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Plants</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">679</div>
+                                            <div id="plantsCount" class="h5 mb-0 font-weight-bold text-gray-800">
+                                                Loading...</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!-- SVG for Plants -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 fill="currentColor" class="bi bi-flower3" viewBox="0 0 16 16">
                                                 <path
@@ -267,7 +272,7 @@ function confirmLogout() {
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Diseases Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -275,9 +280,11 @@ function confirmLogout() {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Diseases</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">38</div>
+                                            <div id="diseasesCount" class="h5 mb-0 font-weight-bold text-gray-800">
+                                                Loading...</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!-- SVG for Diseases -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-lungs-fill" viewBox="0 0 16 16">
                                                 <path
@@ -288,7 +295,8 @@ function confirmLogout() {
                                 </div>
                             </div>
                         </div>
-                        
+
+                        <!-- Medicines Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -296,9 +304,11 @@ function confirmLogout() {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Medicines</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">70</div>
+                                            <div id="medicinesCount" class="h5 mb-0 font-weight-bold text-gray-800">
+                                                Loading...</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!-- SVG for Medicines -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-prescription2" viewBox="0 0 16 16">
                                                 <path d="M7 6h2v2h2v2H9v2H7v-2H5V8h2z" />
@@ -311,7 +321,7 @@ function confirmLogout() {
                             </div>
                         </div>
 
-
+                        <!-- Ayurvedic Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -319,9 +329,11 @@ function confirmLogout() {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Ayurvedic</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
+                                            <div id="ayurvedicCount" class="h5 mb-0 font-weight-bold text-gray-800">
+                                                Loading...</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!-- SVG for Ayurvedic -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-prescription2" viewBox="0 0 16 16">
                                                 <path d="M7 6h2v2h2v2H9v2H7v-2H5V8h2z" />
@@ -334,6 +346,7 @@ function confirmLogout() {
                             </div>
                         </div>
 
+                        <!-- Herbal Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -341,9 +354,11 @@ function confirmLogout() {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Herbal</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                            <div id="herbalCount" class="h5 mb-0 font-weight-bold text-gray-800">
+                                                Loading...</div>
                                         </div>
                                         <div class="col-auto">
+                                            <!-- SVG for Herbal -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 fill="currentColor" class="bi bi-prescription2" viewBox="0 0 16 16">
                                                 <path d="M7 6h2v2h2v2H9v2H7v-2H5V8h2z" />
@@ -355,6 +370,33 @@ function confirmLogout() {
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                fetchData('fetchPlants.php', 'plantsCount');
+                                fetchData('fetchDiseases.php', 'diseasesCount');
+                                fetchData('fetchMedicines.php', 'medicinesCount');
+                                fetchData('fetchAyurvedic.php', 'ayurvedicCount');
+                                fetchData('fetchHerbal.php', 'herbalCount');
+                            });
+
+                            function fetchData(url, elementId) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('GET', url, true);
+                                xhr.onload = function () {
+                                    if (xhr.status === 200) {
+                                        document.getElementById(elementId).textContent = xhr.responseText;
+                                    } else {
+                                        console.error('Error fetching data from ' + url + ': ' + xhr.statusText);
+                                    }
+                                };
+                                xhr.onerror = function () {
+                                    console.error('Request failed');
+                                };
+                                xhr.send();
+                            }
+                        </script>
+
 
                         <!-- Pending Requests Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">

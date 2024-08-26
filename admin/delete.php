@@ -4,7 +4,45 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: login.php');
     exit();
 }
+
+$servername = "localhost";
+$username = "root";  // Replace with your database username
+$password = "";  // Replace with your database password
+$dbname = "rootremedy";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Determine the category
+$category = isset($_GET['category']) ? $_GET['category'] : 'plants';
+$tableMap = [
+    'plants' => 'addplant',
+    'medicines' => 'addmed',
+    'diseases' => 'adddisease'
+];
+
+$tableName = $tableMap[$category];
+$columnId = ($category == 'plants') ? 'plant_id' : (($category == 'medicines') ? 'medicine_id' : 'disease_id');
+
+// Fetch data
+$query = "SELECT * FROM $tableName";
+$result = $conn->query($query);
+
+$data = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+}
+
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,8 +179,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
 </head>
 <body>
 
-
-
 <div class="content">
     <div class="page-title">
         <h1>Delete Plants, Medicines, or Diseases</h1>
@@ -151,9 +187,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <div class="selection-menu">
         <label for="item-select">Select Category:</label>
         <select id="item-select" onchange="updateTable()">
-            <option value="plants">Plants</option>
-            <option value="medicines">Medicines</option>
-            <option value="diseases">Diseases</option>
+            <option value="plants" <?= $category == 'plants' ? 'selected' : '' ?>>Plants</option>
+            <option value="medicines" <?= $category == 'medicines' ? 'selected' : '' ?>>Medicines</option>
+            <option value="diseases" <?= $category == 'diseases' ? 'selected' : '' ?>>Diseases</option>
         </select>
     </div>
 
@@ -166,17 +202,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Neem</td>
-                <td>Antibacterial, Antifungal</td>
-                <td><button class="delete-btn" onclick="showModal()">Delete</button></td>
-            </tr>
-            <tr>
-                <td>Tulsi</td>
-                <td>Immunity Booster, Anti-inflammatory</td>
-                <td><button class="delete-btn" onclick="showModal()">Delete</button></td>
-            </tr>
-            <!-- More rows will be dynamically added based on category -->
+            <?php foreach ($data as $row): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row[$columnId]) ?></td>
+                    <td><?= htmlspecialchars($row['description'] ?? $row['plant_properties'] ?? 'No properties') ?></td>
+                    <td><button class="delete-btn" onclick="showModal(<?= $row[$columnId] ?>)">Delete</button></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>
@@ -192,6 +224,40 @@ if (!isset($_SESSION['admin_logged_in'])) {
         </div>
     </div>
 </div>
+
+<script>
+    var itemIdToDelete;
+
+    function updateTable() {
+        var category = document.getElementById('item-select').value;
+        window.location.href = 'delete.php?category=' + category;
+    }
+
+    function showModal(id) {
+        itemIdToDelete = id;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function hideModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    function confirmDelete() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'deleteItem.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert(xhr.responseText);
+                updateTable();
+            } else {
+                alert('Error deleting record.');
+            }
+        };
+        xhr.send('id=' + encodeURIComponent(itemIdToDelete) + '&category=' + encodeURIComponent(document.getElementById('item-select').value));
+        hideModal();
+    }
+</script>
 
 </body>
 </html>

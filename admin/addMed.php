@@ -204,7 +204,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <select class="form-select" id="selectCategory" name="category" required>
                         <option value="" disabled selected>Select a category</option>
                         <option value="Herbal">Herbal</option>
-                        <option value="Homeopathic">Homeopathic</option>
                         <option value="Ayurvedic">Ayurvedic</option>
                     </select>
                 </div>
