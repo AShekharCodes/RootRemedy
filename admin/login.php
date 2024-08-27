@@ -119,7 +119,7 @@ $conn->close();
                     <div class="d-flex justify-content-center text-bg-primary">
                         <div class="col-12 col-xl-9">
                             <img class="img-fluid rounded mb-4" loading="lazy" src="img/logo2.jfif"
-                                width="150" height="80" alt="Root remedy logo"> <p style="font-size: 24px; margin: 0;"><b>ROOT REMEDY</b></p>
+                                width="140" height="80" alt="Root remedy logo"> <p style="font-size: 24px; margin: 0;"><b>ROOT REMEDY</b></p>
 
                             <hr class="border-primary-subtle mb-4">
                             <h2 class="h1 mb-4" style="font-size: 18px;">Login to continue your journey with Root Remedy.</h2>
@@ -189,7 +189,7 @@ $conn->close();
                                 <div class="col-12">
                                     <div
                                         class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
-                                        <a href="#!">Forgot password</a>
+                                        <a href="forgetPassword.html">Forgot password</a>
                                     </div>
                                 </div>
                             </div>
