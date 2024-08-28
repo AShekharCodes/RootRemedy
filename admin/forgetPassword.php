@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Send the OTP to the user's email
             $subject = "Your OTP for Password Reset";
             $message = "Your OTP for password reset is: $otp\n\nThis OTP is valid for 10 minutes.";
-            $headers = "From: 13purab@gmail.com"; // Replace with your sender email address
+            $headers = "From: Root-Remedy"; // Replace with your sender email address
 
             if (mail($email, $subject, $message, $headers)) {
                 echo "<script>alert('An OTP has been sent to your email.');</script>";

@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 }
 
 // Insert admin user
-$adminUsername = 'daspurab80@gmail.com';
+$adminUsername = 'srijanid12@gmail.com';
 $adminPassword = password_hash('admin@1234', PASSWORD_DEFAULT);
 
 $sql = "INSERT INTO admin (username, password) VALUES (?, ?)";
