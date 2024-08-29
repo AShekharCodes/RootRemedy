@@ -75,6 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100px; /* Same width for buttons */
             margin: 5px 0; /* Space between buttons */
         }
+        .table-responsive {
+            overflow-x: auto; /* Enable horizontal scrolling */
+        }
     </style>
 </head>
 <body>
@@ -92,61 +95,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         <?php endif; ?>
 
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Mobile Number</th>
-                    <th>Subject</th>
-                    <th>Message</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    // Output data of each row
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
-                        echo "<td>" . htmlspecialchars($row['email'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
-                        echo "<td>" . htmlspecialchars($row['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
-                        echo "<td>" . htmlspecialchars($row['subject'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
-                        echo "<td>" . htmlspecialchars($row['message'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Mobile Number</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($result->num_rows > 0) {
+                        // Output data of each row
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                            echo "<td>" . htmlspecialchars($row['email'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                            echo "<td>" . htmlspecialchars($row['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                            echo "<td>" . htmlspecialchars($row['subject'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                            echo "<td>" . htmlspecialchars($row['message'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
 
-                        // Determine status class for styling
-                        $status_class = "badge bg-warning text-dark";
-                        if ($row['status'] === 'Resolved') {
-                            $status_class = "badge bg-success";
-                        } elseif ($row['status'] === 'Rejected') {
-                            $status_class = "badge bg-danger";
+                            // Determine status class for styling
+                            $status_class = "badge bg-warning text-dark";
+                            if ($row['status'] === 'Resolved') {
+                                $status_class = "badge bg-success";
+                            } elseif ($row['status'] === 'Rejected') {
+                                $status_class = "badge bg-danger";
+                            }
+
+                            echo "<td><span class='$status_class'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
+                            echo "<td class='action-buttons'>";
+
+                            if ($row['status'] === 'Pending') {
+                                echo "<form method='post' style='display:inline;'>";
+                                echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
+                                echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
+                                echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
+                                echo "</form>";
+                            } else {
+                                echo "<button class='btn btn-success btn-sm' disabled>Resolve</button> ";
+                                echo "<button class='btn btn-danger btn-sm' disabled>Reject</button>";
+                            }
+
+                            echo "</td>";
+                            echo "</tr>";
                         }
-
-                        echo "<td><span class='$status_class'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
-                        echo "<td class='action-buttons'>";
-
-                        if ($row['status'] === 'Pending') {
-                            echo "<form method='post' style='display:inline;'>";
-                            echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
-                            echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
-                            echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
-                            echo "</form>";
-                        } else {
-                            echo "<button class='btn btn-success btn-sm' disabled>Resolve</button> ";
-                            echo "<button class='btn btn-danger btn-sm' disabled>Reject</button>";
-                        }
-
-                        echo "</td>";
-                        echo "</tr>";
+                    } else {
+                        echo "<tr><td colspan='7' class='text-center'>No consultancy requests found.</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='7' class='text-center'>No consultancy requests found.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: login.php');
+    exit();
+}
+
 $servername = "localhost";
 $username = "root";  // Replace with your database username
 $password = "";  // Replace with your database password
@@ -12,32 +18,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$id = $_POST['id'];
-$category = $_POST['category'];
+// Get POST data
+$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+$category = isset($_POST['category']) ? $_POST['category'] : 'plants';
 
-// Map categories to table names and column IDs
 $tableMap = [
-    'plants' => 'addplant',
-    'medicines' => 'addmed',
-    'diseases' => 'adddisease'
+    'plants' => 'addPlant',
+    'medicines' => 'addMed',
+    'diseases' => 'addDisease'
 ];
 
 $tableName = $tableMap[$category];
 $columnId = ($category == 'plants') ? 'plant_id' : (($category == 'medicines') ? 'medicine_id' : 'disease_id');
 
-// Prepare and execute delete query
-$query = "DELETE FROM $tableName WHERE $columnId = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param('i', $id);
+// Prepare and execute the delete statement
+$delete_sql = "DELETE FROM $tableName WHERE $columnId = ?";
+$stmt = $conn->prepare($delete_sql);
+$stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
-    if ($stmt->affected_rows > 0) {
-        echo "Record deleted successfully";
-    } else {
-        echo "No record found to delete";
-    }
+    echo "Item deleted successfully!";
 } else {
-    echo "Error deleting record: " . $conn->error;
+    echo "Error deleting item: " . $conn->error;
 }
 
 $stmt->close();
