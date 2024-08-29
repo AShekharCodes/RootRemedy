@@ -57,18 +57,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <div class="card-body">
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Database connection
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "rootremedy";
-
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+              include 'db_config.php';
 
                 // Get form data
                 $plant_name = $_POST['plant_name'] ?? '';

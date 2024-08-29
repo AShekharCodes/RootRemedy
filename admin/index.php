@@ -497,6 +497,12 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-info"></i> Medicine
                                         </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle" style="color: #f6c23e;"></i> Ayurvedic
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle" style="color: #e74a3b;"></i> Herbal
+                                        </span>
                                     </div>
                                 </div>
                             </div>
