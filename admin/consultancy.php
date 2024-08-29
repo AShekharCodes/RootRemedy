@@ -4,6 +4,41 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: login.php');
     exit();
 }
+
+// Include the database configuration file
+require_once 'db_config.php';
+
+// Fetch consultancy requests from the database
+$sql = "SELECT user_id, name, email, phone_number, subject, message, status FROM userconsult";
+$result = $conn->query($sql);
+
+// Initialize a variable for displaying messages
+$message = '';
+
+// Update the status of a consultancy request if an action is taken
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Validate input
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+    $new_status = isset($_POST['status']) ? htmlspecialchars(trim($_POST['status'])) : '';
+
+    // Prepare and execute the update statement
+    if ($user_id > 0 && ($new_status === 'Resolved' || $new_status === 'Rejected')) {
+        $update_sql = "UPDATE userconsult SET status = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($update_sql);
+        $stmt->bind_param("si", $new_status, $user_id);
+
+        if ($stmt->execute()) {
+            $message = "Consultancy request updated successfully!";
+            // Refresh the page to reflect the update
+            header('Location: consultancy.php');
+            exit();
+        } else {
+            $message = "Error updating record: " . $conn->error;
+        }
+    } else {
+        $message = "Invalid input. Please try again.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,163 +46,117 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Root Remedy Admin - Consultancy Requests</title>
+    <!-- Include Bootstrap 5 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
+        /* Custom Styles */
+        .table-container {
+            margin-top: 50px;
+            border: 1px solid #007BFF; /* Blue border */
+            border-radius: 8px;
+            background-color: #f8f9fa; /* Light background */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1); /* Blue shadow */
         }
-        header {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px 20px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+        .table thead {
+            background-color: #007BFF; /* Darker blue for header */
+            color: #fff;
         }
-        header nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .table tbody tr {
+            border-bottom: 1px solid #dfe4ea; /* Light border for rows */
         }
-        header nav a {
-            color: #ecf0f1;
-            text-decoration: none;
-            margin: 0 15px;
+        .table tbody tr:last-child {
+            border-bottom: none;
         }
-        header nav a:hover {
-            text-decoration: underline;
-        }
-        .content {
-            padding-top: 100px;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .page-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .page-title h1 {
-            color: #34495e;
-            font-size: 2.5em;
-        }
-        .consultancy-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .consultancy-table th, .consultancy-table td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-        .consultancy-table th {
-            background-color: #3498db;
-            color: white;
-        }
-        .consultancy-table td {
-            background-color: white;
-            color: #34495e;
-        }
-        .status-resolved {
-            color: green;
-            font-weight: bold;
-        }
-        .status-rejected {
-            color: red;
-            font-weight: bold;
-        }
-        .status-pending {
-            color: orange;
-            font-weight: bold;
+        .badge {
+            padding: 8px 12px; /* Uniform badge size */
         }
         .action-buttons button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 5px;
-            font-size: 1em;
-        }
-        .resolve-btn {
-            background-color: #27ae60;
-            color: white;
-        }
-        .reject-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            margin-top: 20px;
+            width: 100px; /* Same width for buttons */
+            margin: 5px 0; /* Space between buttons */
         }
     </style>
 </head>
 <body>
 
+<div class="container">
+    <div class="table-container">
+        <div class="page-title">
+            <h1>Consultancy Requests</h1>
+        </div>
 
+        <!-- Display any messages -->
+        <?php if ($message): ?>
+            <div class="alert alert-info">
+                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
 
-<div class="content">
-    <div class="page-title">
-        <h1>Consultancy Requests</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Mobile Number</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    // Output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['email'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['subject'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['message'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
+
+                        // Determine status class for styling
+                        $status_class = "badge bg-warning text-dark";
+                        if ($row['status'] === 'Resolved') {
+                            $status_class = "badge bg-success";
+                        } elseif ($row['status'] === 'Rejected') {
+                            $status_class = "badge bg-danger";
+                        }
+
+                        echo "<td><span class='$status_class'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
+                        echo "<td class='action-buttons'>";
+
+                        if ($row['status'] === 'Pending') {
+                            echo "<form method='post' style='display:inline;'>";
+                            echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
+                            echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
+                            echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
+                            echo "</form>";
+                        } else {
+                            echo "<button class='btn btn-success btn-sm' disabled>Resolve</button> ";
+                            echo "<button class='btn btn-danger btn-sm' disabled>Reject</button>";
+                        }
+
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7' class='text-center'>No consultancy requests found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
-
-    <table class="consultancy-table">
-        <thead>
-            <tr>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Query</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>John Doe</td>
-                <td>john@example.com</td>
-                <td>+91-9876543210</td>
-                <td>Looking for a cure for headaches using traditional plants.</td>
-                <td class="status-pending">Pending</td>
-                <td class="action-buttons">
-                    <button class="resolve-btn">Resolve</button>
-                    <button class="reject-btn">Reject</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Jane Smith</td>
-                <td>jane@example.com</td>
-                <td>+91-9123456789</td>
-                <td>Can you suggest plants for boosting immunity?</td>
-                <td class="status-resolved">Resolved</td>
-                <td class="action-buttons">
-                    <button class="resolve-btn" disabled>Resolve</button>
-                    <button class="reject-btn" disabled>Reject</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Richard Roe</td>
-                <td>richard@example.com</td>
-                <td>+91-9876512345</td>
-                <td>Are there any plants for skin care?</td>
-                <td class="status-rejected">Rejected</td>
-                <td class="action-buttons">
-                    <button class="resolve-btn" disabled>Resolve</button>
-                    <button class="reject-btn" disabled>Reject</button>
-                </td>
-            </tr>
-            <!-- More rows can be added here -->
-        </tbody>
-    </table>
 </div>
 
-
+<!-- Include Bootstrap 5 JS and Popper.js -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+
+<?php
+// Close the database connection
+$conn->close();
+?>

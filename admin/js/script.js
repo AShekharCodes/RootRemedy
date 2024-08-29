@@ -1,13 +1,6 @@
 document.getElementById('deleteLink').addEventListener('click', function (e) {
     e.preventDefault(); // Prevent the default link behavior
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'delete.php', true); // Request content from delete.php
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            document.getElementById('containerArea').innerHTML = xhr.responseText; // Load content into contentArea div
-        }
-    };
-    xhr.send();
+    loadContent('delete.php'); // Load content from delete.php
 });
 
 document.getElementById('med').addEventListener('click', function (e) {
@@ -23,6 +16,11 @@ document.getElementById('dis').addEventListener('click', function (e) {
 document.getElementById('pnt').addEventListener('click', function (e) {
     e.preventDefault(); // Prevent the default link behavior
     loadContent('addPnt.php'); // Load content from addPnt.php
+});
+
+document.getElementById('con').addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent the default link behavior
+    loadContent('consultancy.php'); // Load content from consultancy.php
 });
 
 function loadContent(url) {
@@ -68,18 +66,3 @@ function attachFormSubmitHandler(actionUrl) {
         console.warn('No form found in containerArea'); // Warn if no form is found
     }
 }
-
-
-
-
-document.getElementById('con').addEventListener('click', function (e) {
-    e.preventDefault(); // Prevent the default link behavior
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'consultancy.php', true); // Request content from consultancy.html
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            document.getElementById('containerArea').innerHTML = xhr.responseText; // Load content into contentArea div
-        }
-    };
-    xhr.send();
-});
