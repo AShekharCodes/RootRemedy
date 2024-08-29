@@ -127,7 +127,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="login.html">Privacy Policy</a>
                         <a class="collapse-item" href="register.html">User Manual</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                        <a class="collapse-item" href="forgot-password.html">Change Password</a>
                         <div class="collapse-divider"></div>
                     </div>
                 </div>
