@@ -64,25 +64,41 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     $conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
+                    // Step 1: Generate a new combination_id
+                    $combinationStmt = $conn->prepare("INSERT INTO combination (combination_id) VALUES (NULL)");
+                    $combinationStmt->execute();
+                    $combination_id = $conn->lastInsertId(); // Get the newly generated combination_id
+
+                    // Step 2: Insert selected plants into the combination_plants table
+                    $selectedPlants = $_POST['plant_ids'];
+                    foreach ($selectedPlants as $plant_id) {
+                        $insertPlantStmt = $conn->prepare("INSERT INTO combination_plants (combination_id, plant_id) VALUES (:combination_id, :plant_id)");
+                        $insertPlantStmt->execute([
+                            ':combination_id' => $combination_id,
+                            ':plant_id' => $plant_id,
+                        ]);
+                    }
+
+                    // Step 3: Insert the new medicine details into the addMed table
                     $stmt = $conn->prepare("INSERT INTO addMed 
-                        (medicine_name, disease_id, plant_id_1, plant_id_2, plant_id_3, preparation_method, how_to_take, category) 
-                        VALUES (:medicine_name, :disease_id, :plant_id_1, :plant_id_2, :plant_id_3, :preparation_method, :how_to_take, :category)");
+                        (medicine_name, disease_id, preparation_method, how_to_take, category, combination_id) 
+                        VALUES (:medicine_name, :disease_id, :preparation_method, :how_to_take, :category, :combination_id)");
 
                     $stmt->execute([
                         ':medicine_name' => filter_var($_POST['medicine_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                         ':disease_id' => filter_var($_POST['disease_id'], FILTER_VALIDATE_INT),
-                        ':plant_id_1' => filter_var($_POST['plant_id_1'], FILTER_VALIDATE_INT),
-                        ':plant_id_2' => filter_var($_POST['plant_id_2'], FILTER_VALIDATE_INT),
-                        ':plant_id_3' => filter_var($_POST['plant_id_3'], FILTER_VALIDATE_INT),
                         ':preparation_method' => filter_var($_POST['preparation_method'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                         ':how_to_take' => filter_var($_POST['how_to_take'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                         ':category' => filter_var($_POST['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                        ':combination_id' => $combination_id,
                     ]);
 
                     echo "<div class='alert alert-success text-center'>New medicine details added successfully!</div>";
                 } catch (PDOException $e) {
+                    // Debugging: Display error message
                     error_log("Database query failed: " . $e->getMessage());
-                    echo "<div class='alert alert-danger text-center'>Error: Failed to add medicine details. Please try again later.</div>";
+                    echo "<div class='alert alert-danger text-center'>Error: " . $e->getMessage() . "</div>";
                 }
             }
             ?>
@@ -117,10 +133,10 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     </select>
                 </div>
 
+                <!-- Multiple Select for Plants -->
                 <div class="mb-3">
-                    <label for="selectPlant1" class="form-label">Select Plant 1</label>
-                    <select class="form-select" id="selectPlant1" name="plant_id_1" required>
-                        <option value="" disabled selected>Select a plant</option>
+                    <label for="selectPlants" class="form-label">Select Plants</label>
+                    <select class="form-select" id="selectPlants" name="plant_ids[]" multiple required>
                         <?php
                         try {
                             $plant_conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
@@ -139,54 +155,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                         }
                         ?>
                     </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="selectPlant2" class="form-label">Select Plant 2 <small>(optional)</small></label>
-                    <select class="form-select" id="selectPlant2" name="plant_id_2">
-                        <option value="" disabled selected>Select a plant (optional)</option>
-                        <?php
-                        try {
-                            $plant_conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
-                            $plant_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                            $plant_stmt = $plant_conn->prepare("SELECT plant_id, plant_name FROM addPlant");
-                            $plant_stmt->execute();
-                            $plant_result = $plant_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($plant_result as $row) {
-                                echo "<option value='" . htmlspecialchars($row['plant_id']) . "'>" . htmlspecialchars($row['plant_name']) . "</option>";
-                            }
-                        } catch (PDOException $e) {
-                            error_log("Database query failed: " . $e->getMessage());
-                            echo "<option value='' disabled>Error fetching plants</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="selectPlant3" class="form-label">Select Plant 3 <small>(optional)</small></label>
-                    <select class="form-select" id="selectPlant3" name="plant_id_3">
-                        <option value="" disabled selected>Select a plant (optional)</option>
-                        <?php
-                        try {
-                            $plant_conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
-                            $plant_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                            $plant_stmt = $plant_conn->prepare("SELECT plant_id, plant_name FROM addPlant");
-                            $plant_stmt->execute();
-                            $plant_result = $plant_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($plant_result as $row) {
-                                echo "<option value='" . htmlspecialchars($row['plant_id']) . "'>" . htmlspecialchars($row['plant_name']) . "</option>";
-                            }
-                        } catch (PDOException $e) {
-                            error_log("Database query failed: " . $e->getMessage());
-                            echo "<option value='' disabled>Error fetching plants</option>";
-                        }
-                        ?>
-                    </select>
+                    <small class="form-text text-muted">Hold down the Ctrl (Windows) / Command (Mac) button to select multiple options.</small>
                 </div>
 
                 <div class="mb-3">
