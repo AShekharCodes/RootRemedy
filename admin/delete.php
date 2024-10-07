@@ -1,0 +1,190 @@
+<?php
+// Database connection
+$servername = "localhost";
+$username = "root"; // Update with your DB username
+$password = ""; // Update with your DB password
+$dbname = "rootremedy"; // Database name
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Handle delete request
+if (isset($_POST['delete'])) {
+    $table = $_POST['table'];
+    $id = $_POST['id'];
+
+    if ($table == 'addplant') {
+        $query = "DELETE FROM addplant WHERE plant_id = ?";
+    } elseif ($table == 'adddisease') {
+        $query = "DELETE FROM adddisease WHERE disease_id = ?";
+    } elseif ($table == 'addmed') {
+        $query = "DELETE FROM addmed WHERE medicine_id = ?";
+    }
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()) {
+        echo "<script>alert('Record deleted successfully');</script>";
+    } else {
+        echo "<script>alert('Error deleting record');</script>";
+    }
+    $stmt->close();
+}
+
+// Handle data display
+$selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Delete Records</h2>
+
+    <!-- Select Option Form -->
+    <form method="post" class="mb-4" id="deleteForm">
+        <div class="mb-3">
+            <label for="deleteOption" class="form-label">Select option to delete:</label>
+            <select name="deleteOption" id="deleteOption" class="form-select" onchange="document.getElementById('deleteForm').submit()">
+                <option value="">-- Select --</option>
+                <option value="plants" <?php if ($selectedOption == 'plants') echo 'selected'; ?>>Delete Plants</option>
+                <option value="diseases" <?php if ($selectedOption == 'diseases') echo 'selected'; ?>>Delete Disease</option>
+                <option value="medicines" <?php if ($selectedOption == 'medicines') echo 'selected'; ?>>Delete Medicine</option>
+            </select>
+        </div>
+    </form>
+
+    <!-- Data Display -->
+    <?php if ($selectedOption == 'plants'): ?>
+        <h3>Plants List</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Plant Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $sql = "SELECT plant_id, plant_name FROM addplant";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $serial = 1;
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>{$serial}</td>
+                            <td>{$row['plant_name']}</td>
+                            <td>
+                                <form method='post' style='display:inline;'>
+                                    <input type='hidden' name='table' value='addplant'>
+                                    <input type='hidden' name='id' value='{$row['plant_id']}'>
+                                    <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
+                                </form>
+                            </td>
+                          </tr>";
+                    $serial++;
+                }
+            } else {
+                echo "<tr><td colspan='3' class='text-center'>No plants found</td></tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+
+    <?php elseif ($selectedOption == 'disease'): ?>
+        <h3>Disease List</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Disease Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $sql = "SELECT disease_id, disease_name FROM adddisease";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $serial = 1;
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>{$serial}</td>
+                            <td>{$row['disease_name']}</td>
+                            <td>
+                                <form method='post' style='display:inline;'>
+                                    <input type='hidden' name='table' value='adddisease'>
+                                    <input type='hidden' name='id' value='{$row['disease_id']}'>
+                                    <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
+                                </form>
+                            </td>
+                          </tr>";
+                    $serial++;
+                }
+            } else {
+                echo "<tr><td colspan='3' class='text-center'>No diseases found</td></tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+
+    <?php elseif ($selectedOption == 'medicine'): ?>
+        <h3>Medicine List</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Medicine Name</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $sql = "SELECT medicine_id, medicine_name, category FROM addmed";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $serial = 1;
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>{$serial}</td>
+                            <td>{$row['medicine_name']}</td>
+                            <td>{$row['category']}</td>
+                            <td>
+                                <form method='post' style='display:inline;'>
+                                    <input type='hidden' name='table' value='addmed'>
+                                    <input type='hidden' name='id' value='{$row['medicine_id']}'>
+                                    <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
+                                </form>
+                            </td>
+                          </tr>";
+                    $serial++;
+                }
+            } else {
+                echo "<tr><td colspan='4' class='text-center'>No medicines found</td></tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
+<script src="/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<?php
+$conn->close();
+?>
