@@ -179,24 +179,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-
-
-
-
-                        <!-- Dropdown - Messages -->
-
-
                         <div class="topbar-divider d-none d-sm-block"></div>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
                                 <img class="img-profile rounded-circle"
-                                    src="\project\RootRemedy\RootRemedy\assets\img\logo2.jfif">
+                                    src="img/logo2.jfif">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -346,7 +336,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             </div>
                         </div>
 
-                        <!-- Herbal Card -->
+                        <!-- Herbal Card --> 
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -397,8 +387,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                 xhr.send();
                             }
                         </script>
-
-
                        <!-- Pending Requests Card Example -->
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-warning shadow h-100 py-2">
@@ -426,8 +414,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
         </div>
     </div>
 </div>
-
-
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
@@ -452,11 +438,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             </div>
                         </div>
                     </div>
-
                     <!-- Content Row -->
-
                     <div class="row">
-
                         <!-- Area Chart -->
                         <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
@@ -464,7 +447,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Resources Overview</h6>
-
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -474,7 +456,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                 </div>
                             </div>
                         </div>
-
                         <!-- Pie Chart -->
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
@@ -508,7 +489,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             </div>
                         </div>
                     </div>
-
                     <!-- Content Row -->
                     <div class="row">
                     </div>

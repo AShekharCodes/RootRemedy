@@ -31,6 +31,7 @@ function updateChart(counts) {
                 hoverBackgroundColor: ["#2e59d9", "#17a673", "#2c9faf", "#f4b619", "#e02d1b"],
                 borderColor: "#4e73df",
                 data: [counts.plants, counts.medicines, counts.diseases, counts.ayurvedic, counts.herbal],  // Dynamic data from server
+                maxBarThickness: 25  // Updated option to dataset
             }],
         },
         options: {
@@ -44,49 +45,53 @@ function updateChart(counts) {
                 }
             },
             scales: {
-                xAxes: [{
-                    gridLines: {
+                x: {
+                    grid: {
                         display: false,
                         drawBorder: false
                     },
                     ticks: {
                         maxTicksLimit: 7
-                    },
-                    maxBarThickness: 25,
-                }],
-                yAxes: [{
+                    }
+                },
+                y: {
                     ticks: {
                         maxTicksLimit: 5,
                         padding: 10,
                     },
-                    gridLines: {
+                    grid: {
                         color: "rgb(234, 236, 244)",
                         zeroLineColor: "rgb(234, 236, 244)",
                         drawBorder: false,
                         borderDash: [2],
                         zeroLineBorderDash: [2]
                     }
-                }],
+                }
             },
-            legend: {
-                display: false
-            },
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-                callbacks: {
-                    label: function (tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleColor: '#6e707e',
+                    titleFont: {
+                        size: 14
+                    },
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    padding: {
+                        x: 15,
+                        y: 15
+                    },
+                    displayColors: false,
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return 'Count: ' + number_format(tooltipItem.raw);
+                        }
                     }
                 }
             }
@@ -94,7 +99,7 @@ function updateChart(counts) {
     });
 }
 
-function number_format(number, decimals, dec_point, thousands_sep) {
+function number_format(number, decimals = 0, dec_point = '.', thousands_sep = ',') {
     number = (number + '').replace(',', '').replace(' ', '');
     var n = !isFinite(+number) ? 0 : +number,
         prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
