@@ -164,18 +164,17 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <div class="input-group">
+        <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Universal search: Search for plants, diseases, etc." aria-label="Search" aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button id="searchButton" class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -517,6 +516,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    
     <script src="js/script.js"></script>
 
 </body>

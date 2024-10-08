@@ -8,12 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
     con: "consultancy.php",
   };
 
+  // Attach click event to navigation links
   Object.keys(navLinks).forEach((linkId) => {
-    document.getElementById(linkId)?.addEventListener("click", function (e) {
-      e.preventDefault();
-      console.log(`Navigating to: ${navLinks[linkId]}`);
-      loadContent(navLinks[linkId]);
-    });
+    const linkElement = document.getElementById(linkId);
+    if (linkElement) {
+      linkElement.addEventListener("click", function (e) {
+        e.preventDefault();
+        console.log(`Navigating to: ${navLinks[linkId]}`);
+        loadContent(navLinks[linkId]);
+      });
+    }
   });
 
   // Function to load content dynamically
@@ -88,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var xhr = new XMLHttpRequest();
     var url = "";
 
+    // Select URL based on the delete option
     switch (option) {
       case "plants":
         url = "fetchDeletePlants.php";
@@ -128,17 +133,18 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault(); // Prevent the default action
         const id = button.getAttribute("data-id");
         const type = button.getAttribute("data-type");
+        const row = button.closest("tr"); // Get the closest row
 
         console.log(`Delete button clicked for ${type} with ID: ${id}`);
         if (confirm(`Are you sure you want to delete this ${type}?`)) {
-          deleteItem(id, type); // Call delete function
+          deleteItem(id, type, row); // Pass the row to delete function
         }
       });
     });
   }
 
   // Separate delete action with AJAX
-  function deleteItem(id, type) {
+  function deleteItem(id, type, row) {
     console.log(`Deleting ${type} with ID: ${id}`);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "deleteItem.php", true);
@@ -146,8 +152,10 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.onload = function () {
       if (xhr.status === 200) {
         alert(xhr.responseText);
-        // Reload the respective list after deletion
-        loadDeleteContent(type);
+        // Remove the row from the table
+        if (row) {
+          row.remove(); // Remove the row from the table immediately
+        }
       } else {
         console.error("Error deleting item:", xhr.statusText);
       }
@@ -156,5 +164,41 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Request failed while deleting item");
     };
     xhr.send(`id=${id}&type=${type}`);
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchButton = document.getElementById("searchButton");
+  const searchInput = document.getElementById("searchInput");
+
+  if (searchButton) {
+      searchButton.addEventListener("click", function () {
+          const query = searchInput.value.trim();
+          if (query) {
+              performSearch(query);
+          } else {
+              alert("Please enter a search term.");
+          }
+      });
+  }
+
+  // Function to perform the search
+  function performSearch(query) {
+      console.log(`Searching for: ${query}`);
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "search.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onload = function () {
+          if (xhr.status === 200) {
+              console.log("Search results received:", xhr.responseText);
+              document.getElementById("containerArea").innerHTML = xhr.responseText; // Update the container area with search results
+          } else {
+              console.error("Error during search:", xhr.statusText);
+          }
+      };
+      xhr.onerror = function () {
+          console.error("Request failed while searching");
+      };
+      xhr.send(`query=${encodeURIComponent(query)}`);
   }
 });

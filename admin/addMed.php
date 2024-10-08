@@ -12,6 +12,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Medicine</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -63,7 +64,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 try {
                     $conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 
                     // Step 1: Generate a new combination_id
                     $combinationStmt = $conn->prepare("INSERT INTO combination (combination_id) VALUES (NULL)");
@@ -187,6 +187,15 @@ if (!isset($_SESSION['admin_logged_in'])) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#selectPlants').select2({
+            placeholder: "Select plants",
+            allowClear: true
+        });
+    });
+</script>
 </body>
 </html>
