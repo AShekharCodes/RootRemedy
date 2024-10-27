@@ -14,12 +14,19 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-image: url('img/back_pnt.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             font-family: Arial, sans-serif;
+            color: #333;
         }
         .container {
             margin-top: 50px;
             max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
         }
         .card {
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -57,7 +64,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <div class="card-body">
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-              include 'db_config.php';
+                include 'db_config.php';
 
                 // Get form data
                 $plant_name = $_POST['plant_name'] ?? '';

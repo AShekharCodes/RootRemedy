@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     dis: "AddDis.php",
     pnt: "addPnt.php",
     con: "consultancy.php",
+    report: "report.php", // Added report link
   };
 
   // Attach click event to navigation links
@@ -20,6 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Attach click event for the report link
+  const reportLink = document.getElementById("report");
+  if (reportLink) {
+    reportLink.addEventListener("click", function (e) {
+      e.preventDefault(); // Prevent default action
+      generateReport(); // Call the generate report function
+    });
+  }
+
   // Function to load content dynamically
   function loadContent(url) {
     console.log(`Loading content from URL: ${url}`);
@@ -29,9 +39,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (xhr.status === 200) {
         console.log("Content loaded successfully.");
         document.getElementById("containerArea").innerHTML = xhr.responseText;
-        attachFormSubmitHandler(url); // Attach form handler after loading content
-        attachDeleteOptionHandler(); // Attach delete option handler
-        attachDeleteButtonHandlers(); // Attach delete button handler
+
+        // Attach handlers after content is loaded
+        attachFormSubmitHandler(url);  // Attach form handler if form is found
+        attachDeleteOptionHandler();   // Attach delete option handler
+        attachDeleteButtonHandlers();  // Attach delete button handler
       } else {
         console.error("Error loading content:", xhr.statusText);
       }
@@ -42,13 +54,35 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.send();
   }
 
+  // Function to generate report
+  function generateReport() {
+    console.log("Generating report...");
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "generateReport.php", true); // Adjust URL as needed for report generation
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log("Report generated successfully.");
+        // You may want to handle the response (e.g., show a success message, update the UI, etc.)
+        alert("Report generated! Check your downloads.");
+      } else {
+        console.error("Error generating report:", xhr.statusText);
+      }
+    };
+    xhr.onerror = function () {
+      console.error("Request failed while generating report");
+    };
+    xhr.send();
+  }
+
   // Handle form submissions using AJAX
   function attachFormSubmitHandler(actionUrl) {
     var form = document.querySelector("#containerArea form");
     if (form) {
+      console.log(`Form found in the loaded content. Attaching submit handler for form action: ${actionUrl}`);
       form.addEventListener("submit", function (e) {
         e.preventDefault(); // Prevent the default form submission
         console.log(`Submitting form to ${actionUrl} via AJAX.`);
+
         var xhr = new XMLHttpRequest();
         xhr.open("POST", actionUrl, true);
         xhr.onload = function () {
@@ -56,15 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
           if (xhr.status === 200) {
             console.log("Form submitted successfully.");
             document.getElementById("containerArea").innerHTML = xhr.responseText;
-            attachFormSubmitHandler(actionUrl); // Re-attach form handler
-            attachDeleteOptionHandler(); // Re-attach delete option handler
-            attachDeleteButtonHandlers(); // Re-attach delete button handler
+            attachFormSubmitHandler(actionUrl);  // Re-attach form handler
+            attachDeleteOptionHandler();         // Re-attach delete option handler
+            attachDeleteButtonHandlers();        // Re-attach delete button handler
           } else {
             console.error("Error submitting form:", xhr.statusText);
           }
         };
         xhr.onerror = function () {
-          console.error("Request failed");
+          console.error("Request failed while submitting form");
         };
         var formData = new FormData(form);
         xhr.send(formData);
@@ -81,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
       deleteOption.addEventListener("change", function (e) {
         e.preventDefault(); // Prevent default action
         console.log(`Selected delete option: ${deleteOption.value}`);
-        loadDeleteContent(deleteOption.value); // Load delete content dynamically
+        loadDeleteContent(deleteOption.value);  // Load delete content dynamically
       });
     }
   }
@@ -104,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         url = "fetchDeleteMedicines.php";
         break;
       default:
-        console.error("Invalid option");
+        console.error("Invalid delete option");
         return;
     }
 
@@ -113,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (xhr.status === 200) {
         console.log("Delete content loaded successfully.");
         document.getElementById("containerArea").innerHTML = xhr.responseText;
-        attachDeleteButtonHandlers(); // Re-attach delete button handlers after loading new content
+        attachDeleteButtonHandlers();  // Attach delete button handlers after loading new content
       } else {
         console.error("Error loading delete content:", xhr.statusText);
       }
@@ -122,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Request failed while loading delete content");
     };
     xhr.send();
-    console.log("Request sent for delete content.");
   }
 
   // Handle delete button clicks
@@ -130,14 +163,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const deleteButtons = document.querySelectorAll(".delete-btn");
     deleteButtons.forEach((button) => {
       button.addEventListener("click", function (e) {
-        e.preventDefault(); // Prevent the default action
+        e.preventDefault();  // Prevent the default action
         const id = button.getAttribute("data-id");
         const type = button.getAttribute("data-type");
-        const row = button.closest("tr"); // Get the closest row
+        const row = button.closest("tr");  // Get the closest row for deletion
 
         console.log(`Delete button clicked for ${type} with ID: ${id}`);
         if (confirm(`Are you sure you want to delete this ${type}?`)) {
-          deleteItem(id, type, row); // Pass the row to delete function
+          deleteItem(id, type, row);  // Pass the row to delete function
         }
       });
     });
@@ -154,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
         alert(xhr.responseText);
         // Remove the row from the table
         if (row) {
-          row.remove(); // Remove the row from the table immediately
+          row.remove();  // Remove the row from the table immediately
         }
       } else {
         console.error("Error deleting item:", xhr.statusText);
@@ -165,40 +198,39 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     xhr.send(`id=${id}&type=${type}`);
   }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+  // Search functionality
   const searchButton = document.getElementById("searchButton");
   const searchInput = document.getElementById("searchInput");
 
   if (searchButton) {
-      searchButton.addEventListener("click", function () {
-          const query = searchInput.value.trim();
-          if (query) {
-              performSearch(query);
-          } else {
-              alert("Please enter a search term.");
-          }
-      });
+    searchButton.addEventListener("click", function () {
+      const query = searchInput.value.trim();
+      if (query) {
+        performSearch(query);
+      } else {
+        alert("Please enter a search term.");
+      }
+    });
   }
 
   // Function to perform the search
   function performSearch(query) {
-      console.log(`Searching for: ${query}`);
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "search.php", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onload = function () {
-          if (xhr.status === 200) {
-              console.log("Search results received:", xhr.responseText);
-              document.getElementById("containerArea").innerHTML = xhr.responseText; // Update the container area with search results
-          } else {
-              console.error("Error during search:", xhr.statusText);
-          }
-      };
-      xhr.onerror = function () {
-          console.error("Request failed while searching");
-      };
-      xhr.send(`query=${encodeURIComponent(query)}`);
+    console.log(`Searching for: ${query}`);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "search.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log("Search results received:", xhr.responseText);
+        document.getElementById("containerArea").innerHTML = xhr.responseText;  // Update the container area with search results
+      } else {
+        console.error("Error during search:", xhr.statusText);
+      }
+    };
+    xhr.onerror = function () {
+      console.error("Request failed while searching");
+    };
+    xhr.send(`query=${encodeURIComponent(query)}`);
   }
 });

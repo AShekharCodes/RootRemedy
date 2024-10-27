@@ -15,31 +15,48 @@ $result = $conn->query($sql);
 // Initialize a variable for displaying messages
 $message = '';
 
-// Update the status of a consultancy request if an action is taken
+// Handle resolving/rejecting consultancy requests
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate input
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
     $new_status = isset($_POST['status']) ? htmlspecialchars(trim($_POST['status'])) : '';
 
-    // Prepare and execute the update statement
     if ($user_id > 0 && ($new_status === 'Resolved' || $new_status === 'Rejected')) {
-        $update_sql = "UPDATE userconsult SET status = ? WHERE user_id = ?";
-        $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("si", $new_status, $user_id);
+        // Fetch the consultancy request details
+        $consult_sql = "SELECT email, subject FROM userconsult WHERE user_id = ?";
+        $stmt = $conn->prepare($consult_sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $consult_result = $stmt->get_result();
+        $consult_data = $consult_result->fetch_assoc();
 
-        if ($stmt->execute()) {
-            $message = "Consultancy request updated successfully!";
-            // Refresh the page to reflect the update
-            header('Location: consultancy.php');
-            exit();
-        } else {
-            $message = "Error updating record: " . $conn->error;
+        if ($consult_data) {
+            $email = $consult_data['email'] ?? '';
+            $subject = $consult_data['subject'] ?? '';
+
+            // Insert into user_queries table
+            $insert_query = "INSERT INTO user_queries (username, query_text, status) VALUES (?, ?, ?)";
+            $insert_stmt = $conn->prepare($insert_query);
+            $insert_stmt->bind_param("sss", $email, $subject, $new_status);
+
+            if ($insert_stmt->execute()) {
+                // Delete from userconsult table
+                $delete_sql = "DELETE FROM userconsult WHERE user_id = ?";
+                $delete_stmt = $conn->prepare($delete_sql);
+                $delete_stmt->bind_param("i", $user_id);
+                $delete_stmt->execute();
+
+                $message = "Consultancy request has been $new_status and moved to user_queries table!";
+            } else {
+                $message = "Error updating record: " . $conn->error;
+            }
         }
     } else {
         $message = "Invalid input. Please try again.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo "<td class='action-buttons'>";
 
                             if ($row['status'] === 'Pending') {
-                                echo "<form method='post' style='display:inline;'>";
+                                echo "<form method='post' style='display:inline;' class='consultancy-form'>"; // Add class for JS targeting
                                 echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
                                 echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
                                 echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
@@ -157,11 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!-- Include Bootstrap 5 JS and Popper.js -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
+<script src="script.js"></script> <!-- Include your script.js -->
 </body>
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>
