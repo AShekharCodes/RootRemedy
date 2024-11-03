@@ -129,6 +129,35 @@ a:focus {
   height: 100vh;
 }
 
+.search-bar {
+  margin-top: 20px;
+  display: flex;
+  /* align-items: center; */
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px 0px 0px 4px;
+  outline: none;
+  width: 100%;
+}
+
+.search-button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+
+.search-button:hover {
+  background-color: #45a049;
+}
+
 .custom_nav-container {
   background-color: transparent;
   position: fixed;
@@ -147,7 +176,7 @@ a:focus {
 }
 
 .navbar .navbar-brand img {
-  filter: brightness(0) invert(0); /* Optional: Makes logo contrast better */
+  filter: brightness(0) invert(1); /* Optional: Makes logo contrast better */
 }
 
 .navbar-brand span {
@@ -353,8 +382,8 @@ a:focus {
 }
 
 .footer_section {
-  background: #178066;
   color: #ffffff;
+  border: 1px solid black;
   padding: 60px 0 15px 0;
   position: relative;
 }
