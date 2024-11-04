@@ -157,6 +157,46 @@ a:focus {
   background-color: #45a049;
 }
 
+.search-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+}
+
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Spacing between dropdowns and button */
+  margin-top: 15px;
+}
+
+.filter-dropdown {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.apply-filter-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.apply-filter-button:hover {
+  background-color: #0056b3;
+}
+
 .custom_nav-container {
   background-color: transparent;
   position: fixed;
