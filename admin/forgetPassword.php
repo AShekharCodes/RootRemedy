@@ -62,51 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/password-resets/password-reset-9/assets/css/password-reset-9.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <style>
-        /* Footer styling */
-        .footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px 0;
-            font-size: 14px;
-            border-top: 1px solid #444;
-        }
-
-        .footer p {
-            margin: 0;
-        }
-
-        .footer a {
-            color: #ffc107;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .social-icons {
-            margin-top: 10px;
-        }
-
-        .social-icon {
-            color: #fff;
-            margin: 0 10px;
-            font-size: 20px;
-            text-decoration: none;
-        }
-
-        .social-icon:hover {
-            color: #ffc107;
-        }
-
-        /* Responsive design for footer */
-        @media (max-width: 767px) {
-            .footer .row {
-                text-align: center;
-            }
-        }
-    </style>
+   
 </head>
 
 <body>

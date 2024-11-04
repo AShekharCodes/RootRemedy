@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     dis: "AddDis.php",
     pnt: "addPnt.php",
     con: "consultancy.php",
-    report: "report.php", // Added report link
+    report: "report.php",
+    fea: "featured.php"
   };
 
   // Attach click event to navigation links
@@ -20,15 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
-
-  // Attach click event for the report link
-  const reportLink = document.getElementById("report");
-  if (reportLink) {
-    reportLink.addEventListener("click", function (e) {
-      e.preventDefault(); // Prevent default action
-      generateReport(); // Call the generate report function
-    });
-  }
 
   // Function to load content dynamically
   function loadContent(url) {
@@ -62,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.onload = function () {
       if (xhr.status === 200) {
         console.log("Report generated successfully.");
-        // You may want to handle the response (e.g., show a success message, update the UI, etc.)
         alert("Report generated! Check your downloads.");
       } else {
         console.error("Error generating report:", xhr.statusText);
@@ -185,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.onload = function () {
       if (xhr.status === 200) {
         alert(xhr.responseText);
-        // Remove the row from the table
         if (row) {
           row.remove();  // Remove the row from the table immediately
         }
