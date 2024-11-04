@@ -8,8 +8,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
 // Include the database configuration file
 require_once 'db_config.php';
 
-// Fetch consultancy requests from the database
-$sql = "SELECT user_id, name, email, phone_number, subject, message, status FROM userconsult";
+// Fetch consultancy requests from the database where the status is 'Pending'
+$sql = "SELECT user_id, name, email, phone_number, subject, message, status FROM userconsult WHERE status = 'Pending'";
 $result = $conn->query($sql);
 
 // Initialize a variable for displaying messages
@@ -19,37 +19,18 @@ $message = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate input
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-    $new_status = isset($_POST['status']) ? htmlspecialchars(trim($_POST['status'])) : '';
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
 
-    if ($user_id > 0 && ($new_status === 'Resolved' || $new_status === 'Rejected')) {
-        // Fetch the consultancy request details
-        $consult_sql = "SELECT email, subject FROM userconsult WHERE user_id = ?";
-        $stmt = $conn->prepare($consult_sql);
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $consult_result = $stmt->get_result();
-        $consult_data = $consult_result->fetch_assoc();
+    if ($user_id > 0 && in_array($action, ['Resolved', 'Rejected'])) {
+        // Update the status in the userconsult table
+        $update_sql = "UPDATE userconsult SET status = ? WHERE user_id = ?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("si", $action, $user_id);
 
-        if ($consult_data) {
-            $email = $consult_data['email'] ?? '';
-            $subject = $consult_data['subject'] ?? '';
-
-            // Insert into user_queries table
-            $insert_query = "INSERT INTO user_queries (username, query_text, status) VALUES (?, ?, ?)";
-            $insert_stmt = $conn->prepare($insert_query);
-            $insert_stmt->bind_param("sss", $email, $subject, $new_status);
-            if ($insert_stmt->execute()) {
-                // Delete from userconsult table if the status is "Rejected"
-                if ($new_status === 'Rejected') {
-                    $delete_sql = "DELETE FROM userconsult WHERE user_id = ?";
-                    $delete_stmt = $conn->prepare($delete_sql);
-                    $delete_stmt->bind_param("i", $user_id);
-                    $delete_stmt->execute();
-                }
-                $message = "Consultancy request has been $new_status and moved to user_queries table!";
-            } else {
-                $message = "Error updating record: " . $conn->error;
-            }
+        if ($update_stmt->execute()) {
+            $message = "Consultancy request has been marked as $action!";
+        } else {
+            $message = "Error updating record: " . $conn->error;
         }
     } else {
         $message = "Invalid input. Please try again.";
@@ -69,31 +50,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Custom Styles */
         .table-container {
             margin-top: 50px;
-            border: 1px solid #007BFF; /* Blue border */
+            border: 1px solid #007BFF;
             border-radius: 8px;
-            background-color: #f8f9fa; /* Light background */
+            background-color: #f8f9fa;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1); /* Blue shadow */
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
         }
         .table thead {
-            background-color: #007BFF; /* Darker blue for header */
+            background-color: #007BFF;
             color: #fff;
         }
         .table tbody tr {
-            border-bottom: 1px solid #dfe4ea; /* Light border for rows */
-        }
-        .table tbody tr:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid #dfe4ea;
         }
         .badge {
-            padding: 8px 12px; /* Uniform badge size */
+            padding: 8px 12px;
         }
         .action-buttons button {
-            width: 100px; /* Same width for buttons */
-            margin: 5px 0; /* Space between buttons */
-        }
-        .table-responsive {
-            overflow-x: auto; /* Enable horizontal scrolling */
+            width: 100px;
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -133,26 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo "<td>" . htmlspecialchars($row['phone_number'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
                             echo "<td>" . htmlspecialchars($row['subject'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
                             echo "<td>" . htmlspecialchars($row['message'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
-
-                            // Determine status class for styling
-                            $status_class = "badge bg-warning text-dark";
-                            if ($row['status'] === 'Resolved') {
-                                $status_class = "badge bg-success";
-                            } elseif ($row['status'] === 'Rejected') {
-                                $status_class = "badge bg-danger";
-                            }
-                            echo "<td><span class='$status_class'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
+                            echo "<td><span class='badge bg-warning text-dark'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
                             echo "<td class='action-buttons'>";
-                            if ($row['status'] === 'Pending') {
-                                echo "<form method='post' style='display:inline;' class='consultancy-form'>";
-                                echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
-                                echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
-                                echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
-                                echo "</form>";
-                            } else {
-                                echo "<button class='btn btn-success btn-sm'>Resolve</button> ";
-                                echo "<button class='btn btn-danger btn-sm'>Reject</button>";
-                            }
+                            echo "<form method='post' style='display:inline;' class='consultancy-form'>";
+                            echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
+                            echo "<button class='btn btn-success btn-sm' type='submit' name='action' value='Resolved'>Resolve</button> ";
+                            echo "<button class='btn btn-danger btn-sm' type='submit' name='action' value='Rejected'>Reject</button>";
+                            echo "</form>";
                             echo "</td>";
                             echo "</tr>";
                         }
@@ -168,6 +130,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!-- Include Bootstrap 5 JS and Popper.js -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="script.js"></script> <!-- Include your script.js -->
 </body>
 </html>
