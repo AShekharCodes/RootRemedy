@@ -38,14 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $insert_query = "INSERT INTO user_queries (username, query_text, status) VALUES (?, ?, ?)";
             $insert_stmt = $conn->prepare($insert_query);
             $insert_stmt->bind_param("sss", $email, $subject, $new_status);
-
             if ($insert_stmt->execute()) {
-                // Delete from userconsult table
-                $delete_sql = "DELETE FROM userconsult WHERE user_id = ?";
-                $delete_stmt = $conn->prepare($delete_sql);
-                $delete_stmt->bind_param("i", $user_id);
-                $delete_stmt->execute();
-
+                // Delete from userconsult table if the status is "Rejected"
+                if ($new_status === 'Rejected') {
+                    $delete_sql = "DELETE FROM userconsult WHERE user_id = ?";
+                    $delete_stmt = $conn->prepare($delete_sql);
+                    $delete_stmt->bind_param("i", $user_id);
+                    $delete_stmt->execute();
+                }
                 $message = "Consultancy request has been $new_status and moved to user_queries table!";
             } else {
                 $message = "Error updating record: " . $conn->error;
@@ -98,20 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="table-container">
         <div class="page-title">
             <h1>Consultancy Requests</h1>
         </div>
-
         <!-- Display any messages -->
         <?php if ($message): ?>
             <div class="alert alert-info">
                 <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
-
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -144,21 +141,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             } elseif ($row['status'] === 'Rejected') {
                                 $status_class = "badge bg-danger";
                             }
-
                             echo "<td><span class='$status_class'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
                             echo "<td class='action-buttons'>";
-
                             if ($row['status'] === 'Pending') {
-                                echo "<form method='post' style='display:inline;' class='consultancy-form'>"; // Add class for JS targeting
+                                echo "<form method='post' style='display:inline;' class='consultancy-form'>";
                                 echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
                                 echo "<button class='btn btn-success btn-sm' type='submit' name='status' value='Resolved'>Resolve</button> ";
                                 echo "<button class='btn btn-danger btn-sm' type='submit' name='status' value='Rejected'>Reject</button>";
                                 echo "</form>";
                             } else {
-                                echo "<button class='btn btn-success btn-sm' disabled>Resolve</button> ";
-                                echo "<button class='btn btn-danger btn-sm' disabled>Reject</button>";
+                                echo "<button class='btn btn-success btn-sm'>Resolve</button> ";
+                                echo "<button class='btn btn-danger btn-sm'>Reject</button>";
                             }
-
                             echo "</td>";
                             echo "</tr>";
                         }
