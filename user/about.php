@@ -13,7 +13,7 @@ if (isset($_GET['status'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="assets/favicon.png" type="png" />
-    <title>RootRemedy - Search</title>
+    <title>RootRemedy - About</title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -37,30 +37,8 @@ if (isset($_GET['status'])) {
 
         <!-- Centered Text -->
         <div class="centered-text">
-            <h1>Search for your desired topic</h1>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for plants, medicines and diseases..." name="search"
-                    class="search-input" />
-                <button type="submit" class="search-button">Search</button>
-            </div>
-            <!-- Filter Dropdowns and Apply Filter Button -->
-            <div class="filter-controls">
-                <select class="filter-dropdown" name="category">
-                    <option value="">Select Category</option>
-                    <option value="plants">Plants</option>
-                    <option value="medicines">Medicines</option>
-                    <option value="diseases">Diseases</option>
-                </select>
+            <h1>About us</h1>
 
-                <select class="filter-dropdown" name="availability">
-                    <option value="">Usage type</option>
-                    <option value="inflamatory">Inflamatory</option>
-                    <option value="cutsnwounds">Cuts and wounds</option>
-                    <option value="gastric">Gastric</option>
-                </select>
-
-                <button type="button" class="apply-filter-button">Apply Filter</button>
-            </div>
         </div>
 
         <!-- Navbar -->
@@ -97,9 +75,20 @@ if (isset($_GET['status'])) {
             </div>
         </nav>
     </div>
-    <div class="result-section">
-        <h4>The Search results appear here...</h4>
+    <div class="about-section">
+        <h6>A knowledge-based system of indigenous medicines is established to ease the querying and
+            application of medicine knowledge that is commonly available in North East India. Using the
+            Object Oriented Programming language, Model View Controller development model, and
+            integrated development environment, we propose a client-server-based architecture system for the betterment
+            of the society.
+
+            We call it as RootRemedy To enable the query of original indigenous medicine information, a hierarchical
+            query based system was created considering load balancing cluster-based web server. The
+            HKIMed offers a fresh approach to querying indigenous medical knowledge, assisting users in
+            comprehending and gaining information of medicine for specific diseases.
+        </h6>
     </div>
+
     <footer class="footer_section">
         <div class="container">
             <div class="row">

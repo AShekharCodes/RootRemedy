@@ -13,7 +13,7 @@ if (isset($_GET['status'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="assets/favicon.png" type="png" />
-    <title>RootRemedy - Search</title>
+    <title>RootRemedy - Contact</title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -37,30 +37,8 @@ if (isset($_GET['status'])) {
 
         <!-- Centered Text -->
         <div class="centered-text">
-            <h1>Search for your desired topic</h1>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for plants, medicines and diseases..." name="search"
-                    class="search-input" />
-                <button type="submit" class="search-button">Search</button>
-            </div>
-            <!-- Filter Dropdowns and Apply Filter Button -->
-            <div class="filter-controls">
-                <select class="filter-dropdown" name="category">
-                    <option value="">Select Category</option>
-                    <option value="plants">Plants</option>
-                    <option value="medicines">Medicines</option>
-                    <option value="diseases">Diseases</option>
-                </select>
+            <h1>Find our contact details below</h1>
 
-                <select class="filter-dropdown" name="availability">
-                    <option value="">Usage type</option>
-                    <option value="inflamatory">Inflamatory</option>
-                    <option value="cutsnwounds">Cuts and wounds</option>
-                    <option value="gastric">Gastric</option>
-                </select>
-
-                <button type="button" class="apply-filter-button">Apply Filter</button>
-            </div>
         </div>
 
         <!-- Navbar -->
@@ -97,9 +75,8 @@ if (isset($_GET['status'])) {
             </div>
         </nav>
     </div>
-    <div class="result-section">
-        <h4>The Search results appear here...</h4>
-    </div>
+
+
     <footer class="footer_section">
         <div class="container">
             <div class="row">

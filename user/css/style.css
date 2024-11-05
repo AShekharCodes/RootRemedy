@@ -337,6 +337,12 @@ a:focus {
   text-transform: capitalize;
 }
 
+.result-section {
+  padding: 20px;
+  height: 50vh;
+  background-color: lightgreen;
+}
+
 .contact_section {
   position: relative;
   background-image: url(../assets/featured_bg.jpg);
@@ -383,6 +389,13 @@ a:focus {
 /* .contact_section .form_container input.message-box {
   height: 175px;
 } */
+
+.about-section h6 {
+  padding: 20px;
+  font-size: 18px;
+  background-color: lightgreen;
+  margin: 0;
+}
 
 .contact_section .form_container button {
   width: 50%;

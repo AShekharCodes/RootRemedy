@@ -70,13 +70,13 @@ if (isset($_GET['status'])) {
             <a class="nav-link" href="filteredsearch.php"> Filtered Search</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#enquire">Enquire</a>
+            <a class="nav-link" href="index.php#enquire">Enquire</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about.php">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Get in touch</a>
+            <a class="nav-link" href="contact.php">Get in touch</a>
           </li>
         </ul>
       </div>
@@ -147,7 +147,7 @@ if (isset($_GET['status'])) {
 
   <!-- end featured section -->
 
-  <!-- contact section -->
+  <!-- enquire section -->
   <section id="enquire" class="contact_section layout_padding">
     <div class="container">
       <div class="heading_container">
@@ -242,8 +242,8 @@ if (isset($_GET['status'])) {
             <div class="footer_links">
               <a class="active" href="index.php"> Home </a>
               <a class="" href="about.php"> Filtered Search </a>
-              <a class="" href="departments.html"> Enquire </a>
-              <a class="" href="doctors.html"> About Us </a>
+              <a class="" href="index.php#enquire"> Enquire </a>
+              <a class="" href="about.php"> About Us </a>
               <a class="" href="contact.html"> Get In Touch </a>
             </div>
           </div>
