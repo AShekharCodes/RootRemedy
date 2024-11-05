@@ -19,6 +19,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         }
         .container {
             margin-top: 50px;
+            max-width: 1000px;
         }
         .card {
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);

@@ -23,7 +23,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         }
         .container {
             margin-top: 50px;
-            max-width: 600px;
+            max-width: 1000px; /* Increased width for a wider layout */
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;

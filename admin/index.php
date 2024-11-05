@@ -41,7 +41,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <i class="fas fa-seedling"></i>
+
                 </div>
                 <div class="sidebar-brand-text mx-3">Root Remedy </div>
             </a>
@@ -133,8 +134,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="privacy.html">Privacy Policy</a>
-                        <a class="collapse-item" href="user_manual.html">User Manual</a>
+                        <a class="collapse-item" href="#" id="pri">Privacy Policy</a>
+                        <a class="collapse-item" href="#" id="use">User Manual</a>
                         <a class="collapse-item" href="forgot-password.html">Change Password</a>
                         <div class="collapse-divider"></div>
                     </div>

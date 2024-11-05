@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     pnt: "addPnt.php",
     con: "consultancy.php",
     report: "report.php",
-    fea: "featured.php"
+    fea: "featured.php",
+    pri: "privacy.html",
+    use: "user_manual.html"
   };
 
   // Attach click event to navigation links

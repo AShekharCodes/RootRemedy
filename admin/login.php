@@ -108,10 +108,10 @@ $conn->close();
                 <div class="col-12 col-md-6 col-xl-7">
                     <div class="d-flex justify-content-center text-bg-primary">
                         <div class="col-12 col-xl-9">
-                            <img class="img-fluid rounded mb-4" loading="lazy" src="img/logo2.jfif"
-                                width="140" height="80" alt="Root remedy logo"> <p style="font-size: 24px; margin: 0;"><b>ROOT REMEDY</b></p>
+                            <img class="img-fluid rounded mb-4" loading="lazy" src="img/logo2.jpeg"
+                                width="140" height="80" alt="Root remedy logo"> 
 
-                            <hr class="border-primary-subtle mb-4">
+                           
                             <h2 class="h1 mb-4" style="font-size: 18px;">Login to continue your journey with Root Remedy.</h2>
                             <p class="lead mb-5">Its a Hierarchical Knowledge based system for indigenous medicines of North-east India</p>
                             <div class="text-endx">
