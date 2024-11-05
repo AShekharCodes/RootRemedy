@@ -15,20 +15,21 @@ $result = $conn->query($sql);
 // Initialize a variable for displaying messages
 $message = '';
 
-// Handle resolving/rejecting consultancy requests
+// Handle resolving consultancy requests
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validate input
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    $action = 'Resolved';
 
-    if ($user_id > 0 && in_array($action, ['Resolved', 'Rejected'])) {
-        // Update the status in the userconsult table
-        $update_sql = "UPDATE userconsult SET status = ? WHERE user_id = ?";
+    if ($user_id > 0) {
+        // Update the status in the user table
+        $update_sql = "UPDATE user SET status = ? WHERE user_id = ?";
         $update_stmt = $conn->prepare($update_sql);
         $update_stmt->bind_param("si", $action, $user_id);
 
         if ($update_stmt->execute()) {
-            $message = "Consultancy request has been marked as $action!";
+            // After marking the request as Resolved, refresh the page
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
         } else {
             $message = "Error updating record: " . $conn->error;
         }
@@ -37,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,45 +48,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Custom Styles */
-        .table-container {
-            margin-top: 50px;
-            border: 1px solid #007BFF;
-            border-radius: 8px;
+        body {
             background-color: #f8f9fa;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
         }
-        .table thead {
-            background-color: #007BFF;
-            color: #fff;
+        .table-container {
+            margin-top: 20px;
         }
-        .table tbody tr {
-            border-bottom: 1px solid #dfe4ea;
+        .page-title h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #495057;
         }
-        .badge {
-            padding: 8px 12px;
+        .table-container .alert {
+            margin-bottom: 20px;
         }
-        .action-buttons button {
-            width: 100px;
-            margin: 5px 0;
+        .action-buttons form {
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="table-container">
+<div class="container mt-4">
+    <div class="table-container card shadow-sm p-4">
         <div class="page-title">
             <h1>Consultancy Requests</h1>
         </div>
         <!-- Display any messages -->
         <?php if ($message): ?>
-            <div class="alert alert-info">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
                     <tr>
                         <th>User Name</th>
                         <th>Email</th>
@@ -100,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <tbody>
                     <?php
                     if ($result->num_rows > 0) {
-                        // Output data of each row
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td>" . htmlspecialchars($row['name'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
@@ -110,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo "<td>" . htmlspecialchars($row['message'] ?? '', ENT_QUOTES, 'UTF-8') . "</td>";
                             echo "<td><span class='badge bg-warning text-dark'>" . htmlspecialchars($row['status'] ?? '', ENT_QUOTES, 'UTF-8') . "</span></td>";
                             echo "<td class='action-buttons'>";
-                            echo "<form method='post' style='display:inline;' class='consultancy-form'>";
+                            // Form for Resolved action only
+                            echo "<form method='post' class='consultancy-form' style='display:inline-block;'>";
                             echo "<input type='hidden' name='user_id' value='" . intval($row['user_id']) . "'>";
-                            echo "<button class='btn btn-success btn-sm' type='submit' name='action' value='Resolved'>Resolve</button> ";
-                            echo "<button class='btn btn-danger btn-sm' type='submit' name='action' value='Rejected'>Reject</button>";
+                            echo "<button class='btn btn-success btn-sm' type='submit'>Resolve</button>";
                             echo "</form>";
                             echo "</td>";
                             echo "</tr>";
@@ -127,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
-
 <!-- Include Bootstrap 5 JS and Popper.js -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>

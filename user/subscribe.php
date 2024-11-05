@@ -1,11 +1,10 @@
 <?php
 include 'db_config.php';
 
-
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the email from the form input
-    $subscriber = $_POST['subscribers'];
+    $subscriber = mysqli_real_escape_string($conn, $_POST['subscribers']);
 
     // Prepare an SQL statement to prevent SQL injection
     $stmt = $conn->prepare("INSERT INTO subscriptions (subscribers) VALUES (?)");
@@ -13,9 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the statement
     if ($stmt->execute()) {
-        header("Location: index.php?status=success");
+        // Redirect to index.php with success status for the subscription
+        header("Location: index.php?newsletter_status=subscribed");
     } else {
-        header("Location: index.php?status=error");
+        // Redirect to index.php with error status for the subscription
+        header("Location: index.php?newsletter_status=error");
     }
 
     // Close the statement

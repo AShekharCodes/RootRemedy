@@ -39,7 +39,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Insert new entry if it doesn't exist
         $stmt = $conn->prepare("INSERT INTO featured (title, description, image, type) VALUES (?, ?, ?, ?)");
+        // Use send_long_data for large images
         $stmt->bind_param("ssbs", $title, $description, $image, $type);
+        
+        // Begin transaction
+        $stmt->execute();
+        // Use send_long_data to upload the image
+        $stmt->send_long_data(3, $image);  // Index 3 is for the image parameter
         if ($stmt->execute()) {
             $message = "<div id='success-message' class='alert alert-success'>New featured item added successfully!</div>";
         } else {
@@ -106,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Choose Image</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                 </div>
                 <div class="mb-3">
                     <label for="type" class="form-label">Type</label>

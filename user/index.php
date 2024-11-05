@@ -1,16 +1,20 @@
 <?php include 'getfeatured.php'; ?>
 <?php
 $status = '';
+$newsletter_status = '';
 if (isset($_GET['status'])) {
   $status = $_GET['status'];
+}
+if (isset($_GET['newsletter_status'])) {
+  $newsletter_status = $_GET['newsletter_status'];
 }
 include 'db_config.php';
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8" lang="en" />
+  <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <link rel="shortcut icon" href="assets/favicon.png" type="png" />
@@ -18,10 +22,10 @@ include 'db_config.php';
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
+  
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
-
+  
   <!-- font awesome style -->
   <link href="css/font-awesome.min.css" rel="stylesheet" />
 
@@ -43,8 +47,7 @@ include 'db_config.php';
     <div class="centered-text">
       <h1>Empowering Health with Nature's Remedies</h1>
       <div class="search-bar">
-        <input type="text" placeholder="Search for plants, medicines and diseases..." name="search"
-          class="search-input" />
+        <input type="text" placeholder="Search for plants, medicines and diseases..." name="search" class="search-input" />
         <button type="submit" class="search-button">Search</button>
       </div>
     </div>
@@ -57,8 +60,7 @@ include 'db_config.php';
         </span>
       </a>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class=""> </span>
       </button>
 
@@ -102,9 +104,7 @@ include 'db_config.php';
             </div>
             <div class="detail-box">
               <h5><?php echo $featuredPlant['title']; ?></h5>
-              <p>
-                <?php echo $featuredPlant['description']; ?>
-              </p>
+              <p><?php echo $featuredPlant['description']; ?></p>
             </div>
           </div>
         </div>
@@ -119,9 +119,7 @@ include 'db_config.php';
             </div>
             <div class="detail-box">
               <h5><?php echo $featuredDisease['title']; ?></h5>
-              <p>
-                <?php echo $featuredDisease['description']; ?>
-              </p>
+              <p><?php echo $featuredDisease['description']; ?></p>
             </div>
           </div>
         </div>
@@ -136,9 +134,7 @@ include 'db_config.php';
             </div>
             <div class="detail-box">
               <h5><?php echo $featuredMedicine['title']; ?></h5>
-              <p>
-                <?php echo $featuredMedicine['description']; ?>
-              </p>
+              <p><?php echo $featuredMedicine['description']; ?></p>
             </div>
           </div>
         </div>
@@ -186,13 +182,12 @@ include 'db_config.php';
                 <input type="text" name="subject" placeholder="Subject" required />
               </div>
               <div>
-                <input name="message" placeholder="Message" required></input>
+                <textarea name="message" placeholder="Message" required></textarea>
               </div>
               <div class="btn_box">
                 <button type="submit">SEND</button>
               </div>
             </form>
-
           </div>
         </div>
       </div>
@@ -237,62 +232,33 @@ include 'db_config.php';
             </a>
           </div>
         </div>
-        <div class="col-md-6 col-lg-2 footer_col">
-          <div class="footer_link_box">
-            <h4>Links</h4>
-            <div class="footer_links">
-              <a class="active" href="index.php"> Home </a>
-              <a class="" href="about.php"> Filtered Search </a>
-              <a class="" href="departments.html"> Enquire </a>
-              <a class="" href="doctors.html"> About Us </a>
-              <a class="" href="contact.html"> Get In Touch </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 footer_col">
-          <h4>Our Location</h4>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d872.9648967683238!2d91.6187429878337!3d26.129819089292443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375a43f3fffffff9%3A0x122d2ba3a82829ab!2sAssam%20Don%20Bosco%20University%2C%20Azara%20Guwahati!5e1!3m2!1sen!2sin!4v1729932004231!5m2!1sen!2sin"
-            style="border: 0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-
         <div class="col-md-6 col-lg-3 footer_col">
-          <h4>Newsletter</h4>
-          <?php if ($status == 'success'): ?>
+          <h4>Newsletter Subscription</h4>
+          <?php if ($newsletter_status == 'subscribed'): ?>
             <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-              Subscribed!
+              You have successfully subscribed to our newsletter!
             </div>
-          <?php elseif ($status == 'error'): ?>
+          <?php elseif ($newsletter_status == 'error'): ?>
             <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-              Unable to Subscribe.
+              There was an error subscribing. Please try again.
             </div>
           <?php endif; ?>
           <form action="subscribe.php" method="POST">
             <input type="email" name="subscribers" placeholder="Enter email" required />
-            <button type="submit">Subscribe</button>
+            <div class="btn_box">
+              <button type="submit">Subscribe</button>
+            </div>
           </form>
         </div>
       </div>
-      <div class="footer-info">
-        <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By Root
-          Remedy
-        </p>
-      </div>
     </div>
   </footer>
-  <!-- footer section -->
+  <!-- end footer section -->
 
-  <!-- jQuery -->
-  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
   <!-- bootstrap js -->
-  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script src="js/bootstrap.js"></script>
   <!-- custom js -->
-  <script type="text/javascript" src="js/custom.js"></script>
+  <script src="js/custom.js"></script>
 </body>
 
 </html>

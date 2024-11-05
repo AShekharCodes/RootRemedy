@@ -13,14 +13,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <title>Add Plant Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-image: url('img/back_pnt.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            color: #333;
-        }
         .container {
             margin-top: 50px;
             max-width: 1000px; /* Increased width for a wider layout */
