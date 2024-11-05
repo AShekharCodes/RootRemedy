@@ -82,7 +82,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     }
 
                     // Step 3: Insert the new medicine details into the addMed table
-                    $stmt = $conn->prepare("INSERT INTO addMed 
+                    $stmt = $conn->prepare("INSERT INTO medicine 
                         (medicine_name, disease_id, preparation_method, how_to_take, category, combination_id) 
                         VALUES (:medicine_name, :disease_id, :preparation_method, :how_to_take, :category, :combination_id)");
 
@@ -119,7 +119,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             $disease_conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
                             $disease_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                            $disease_stmt = $disease_conn->prepare("SELECT disease_id, disease_name FROM addDisease");
+                            $disease_stmt = $disease_conn->prepare("SELECT disease_id, disease_name FROM disease");
                             $disease_stmt->execute();
                             $disease_result = $disease_stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -143,7 +143,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             $plant_conn = new PDO("mysql:host=localhost;dbname=rootremedy", "root", "");
                             $plant_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                            $plant_stmt = $plant_conn->prepare("SELECT plant_id, plant_name FROM addPlant");
+                            $plant_stmt = $plant_conn->prepare("SELECT plant_id, plant_name FROM plant");
                             $plant_stmt->execute();
                             $plant_result = $plant_stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,7 +1,7 @@
 <?php
 include 'db_config.php';
 
-$sql = "SELECT COUNT(*) as count FROM addPlant";
+$sql = "SELECT COUNT(*) as count FROM plant";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

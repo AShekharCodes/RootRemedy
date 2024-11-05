@@ -2,7 +2,7 @@
 include 'db_config.php'; // Include your database connection
 
 // Fetch medicines data from the addmed table
-$query = "SELECT medicine_id, medicine_name, category FROM addmed";
+$query = "SELECT medicine_id, medicine_name, category FROM medicine";
 $result = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($result) > 0) {

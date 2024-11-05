@@ -10,7 +10,7 @@ try {
     $query = isset($_GET['query']) ? trim($_GET['query']) : '';
     
     // Prepare and execute the SQL query to search for plants
-    $stmt = $conn->prepare("SELECT plant_id, plant_name FROM addPlant WHERE plant_name LIKE :query ORDER BY plant_name");
+    $stmt = $conn->prepare("SELECT plant_id, plant_name FROM Plant WHERE plant_name LIKE :query ORDER BY plant_name");
     $stmt->execute([':query' => '%' . $query . '%']);
     
     // Fetch all results and encode them as JSON

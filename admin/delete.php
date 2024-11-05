@@ -6,12 +6,12 @@ if (isset($_POST['delete'])) {
     $table = $_POST['table'];
     $id = $_POST['id'];
 
-    if ($table == 'addplant') {
-        $query = "DELETE FROM addplant WHERE plant_id = ?";
-    } elseif ($table == 'adddisease') {
-        $query = "DELETE FROM adddisease WHERE disease_id = ?";
-    } elseif ($table == 'addmed') {
-        $query = "DELETE FROM addmed WHERE medicine_id = ?";
+    if ($table == 'plant') {
+        $query = "DELETE FROM plant WHERE plant_id = ?";
+    } elseif ($table == 'disease') {
+        $query = "DELETE FROM disease WHERE disease_id = ?";
+    } elseif ($table == 'medicine') {
+        $query = "DELETE FROM medicine WHERE medicine_id = ?";
     }
 
     $stmt = $conn->prepare($query);
@@ -68,7 +68,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT plant_id, plant_name FROM addplant";
+                $sql = "SELECT plant_id, plant_name FROM plant";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
@@ -78,7 +78,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                                 <td>{$row['plant_name']}</td>
                                 <td>
                                     <form method='post' style='display:inline;'>
-                                        <input type='hidden' name='table' value='addplant'>
+                                        <input type='hidden' name='table' value='plant'>
                                         <input type='hidden' name='id' value='{$row['plant_id']}'>
                                         <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
                                     </form>
@@ -105,7 +105,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT disease_id, disease_name FROM adddisease";
+                $sql = "SELECT disease_id, disease_name FROM disease";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
@@ -115,7 +115,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                                 <td>{$row['disease_name']}</td>
                                 <td>
                                     <form method='post' style='display:inline;'>
-                                        <input type='hidden' name='table' value='adddisease'>
+                                        <input type='hidden' name='table' value='disease'>
                                         <input type='hidden' name='id' value='{$row['disease_id']}'>
                                         <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
                                     </form>
@@ -143,7 +143,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT medicine_id, medicine_name, category FROM addmed";
+                $sql = "SELECT medicine_id, medicine_name, category FROM medicine";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
@@ -154,7 +154,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                                 <td>{$row['category']}</td>
                                 <td>
                                     <form method='post' style='display:inline;'>
-                                        <input type='hidden' name='table' value='addmed'>
+                                        <input type='hidden' name='table' value='medicine'>
                                         <input type='hidden' name='id' value='{$row['medicine_id']}'>
                                         <button type='submit' name='delete' class='btn btn-danger'>Delete</button>
                                     </form>

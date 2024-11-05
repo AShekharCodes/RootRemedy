@@ -82,7 +82,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 }
 
                 // SQL query to insert data into the database
-                $sql = "INSERT INTO addplant (plant_name, plant_properties, image1, image2) 
+                $sql = "INSERT INTO plant (plant_name, plant_properties, image1, image2) 
                         VALUES ('$plant_name', '$plant_properties', '$image1', '$image2')";
 
                 if ($conn->query($sql) === TRUE) {

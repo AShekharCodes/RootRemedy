@@ -2,7 +2,7 @@
 include 'db_config.php'; // Include your database connection
 
 // Fetch diseases data from the adddisease table
-$query = "SELECT disease_id, disease_name FROM adddisease";
+$query = "SELECT disease_id, disease_name FROM disease";
 $result = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($result) > 0) {

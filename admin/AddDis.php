@@ -65,7 +65,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 $disease_symptoms = $_POST['disease_symptoms'];
 
                 // SQL query to insert data into the database
-                $sql = "INSERT INTO addDisease (disease_name, properties, symptoms) 
+                $sql = "INSERT INTO disease (disease_name, properties, symptoms) 
                         VALUES ('$disease_name', '$disease_properties', '$disease_symptoms')";
 
                 if ($conn->query($sql) === TRUE) {

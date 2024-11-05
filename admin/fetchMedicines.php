@@ -1,7 +1,7 @@
 <?php
 include 'db_config.php';
 
-$sql = "SELECT COUNT(*) as count FROM addMed";
+$sql = "SELECT COUNT(*) as count FROM medicine";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

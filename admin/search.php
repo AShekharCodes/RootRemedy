@@ -13,7 +13,7 @@ if ($query !== '') {
     $output .= '<h3>Search Results for "' . htmlspecialchars($query) . '"</h3>';
     
     // Search in plants table
-    $sqlPlants = "SELECT plant_id, plant_name FROM addplant WHERE plant_name LIKE ?";
+    $sqlPlants = "SELECT plant_id, plant_name FROM plant WHERE plant_name LIKE ?";
     $stmtPlants = $conn->prepare($sqlPlants);
     $searchTerm = "%" . $query . "%";
     $stmtPlants->bind_param("s", $searchTerm);
@@ -35,7 +35,7 @@ if ($query !== '') {
     }
 
     // Search in diseases table
-    $sqlDiseases = "SELECT disease_id, disease_name FROM adddisease WHERE disease_name LIKE ?";
+    $sqlDiseases = "SELECT disease_id, disease_name FROM disease WHERE disease_name LIKE ?";
     $stmtDiseases = $conn->prepare($sqlDiseases);
     $stmtDiseases->bind_param("s", $searchTerm);
     $stmtDiseases->execute();
@@ -56,7 +56,7 @@ if ($query !== '') {
     }
 
     // Search in medicines table
-    $sqlMedicines = "SELECT medicine_id, medicine_name FROM addmed WHERE medicine_name LIKE ?";
+    $sqlMedicines = "SELECT medicine_id, medicine_name FROM medicine WHERE medicine_name LIKE ?";
     $stmtMedicines = $conn->prepare($sqlMedicines);
     $stmtMedicines->bind_param("s", $searchTerm);
     $stmtMedicines->execute();

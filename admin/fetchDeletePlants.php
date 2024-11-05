@@ -2,7 +2,7 @@
 include 'db_config.php'; // Include your database connection
 
 // Fetch plants data from the addplant table
-$query = "SELECT plant_id, plant_name FROM addplant";
+$query = "SELECT plant_id, plant_name FROM plant";
 $result = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($result) > 0) {

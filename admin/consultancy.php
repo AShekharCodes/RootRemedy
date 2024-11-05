@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
 require_once 'db_config.php';
 
 // Fetch consultancy requests from the database where the status is 'Pending'
-$sql = "SELECT user_id, name, email, phone_number, subject, message, status FROM userconsult WHERE status = 'Pending'";
+$sql = "SELECT user_id, name, email, phone_number, subject, message, status FROM user WHERE status = 'Pending'";
 $result = $conn->query($sql);
 
 // Initialize a variable for displaying messages

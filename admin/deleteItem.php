@@ -6,11 +6,11 @@ if (isset($_POST['id']) && isset($_POST['type'])) {
     $type = $_POST['type'];
     
     if ($type === 'plant') {
-        $query = "DELETE FROM addplant WHERE plant_id = ?";
+        $query = "DELETE FROM plant WHERE plant_id = ?";
     } elseif ($type === 'disease') {
-        $query = "DELETE FROM adddisease WHERE disease_id = ?";
+        $query = "DELETE FROM disease WHERE disease_id = ?";
     } elseif ($type === 'medicine') {
-        $query = "DELETE FROM addmed WHERE medicine_id = ?";
+        $query = "DELETE FROM medicine WHERE medicine_id = ?";
     } else {
         echo 'Invalid type';
         exit;

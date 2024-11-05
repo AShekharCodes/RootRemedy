@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
 include 'db_config.php';
 
 // Count consultation requests
-$sql = "SELECT COUNT(*) AS count FROM userconsult";
+$sql = "SELECT COUNT(*) AS count FROM user";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
