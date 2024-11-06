@@ -51,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             background-color: #f8f9fa;
         }
+        .container{
+            max-width: 100%;
+        }
         .table-container {
             margin-top: 20px;
         }

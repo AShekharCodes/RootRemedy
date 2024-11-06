@@ -148,7 +148,7 @@ include 'db_config.php';
   <section id="enquire" class="contact_section layout_padding">
     <div class="container">
       <div class="heading_container">
-        <h2>Enquire</h2>
+        <h2>Request Consultancy</h2>
       </div>
       <div class="row">
         <div class="col-md-12">
