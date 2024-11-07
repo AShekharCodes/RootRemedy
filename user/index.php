@@ -196,7 +196,7 @@ include 'db_config.php';
   <!-- end contact section -->
 
   <!-- footer section -->
-  <footer class="footer_section">
+  <footer class="footer_section" style="">
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-lg-3 footer_col">

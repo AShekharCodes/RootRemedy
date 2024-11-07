@@ -198,8 +198,8 @@ a:focus {
 }
 
 .custom_nav-container {
-  background-color: transparent;
-  position: fixed;
+  /* background-color: transparent; */
+  position: absolute;
   width: 100%;
   backdrop-filter: blur(5px);
   z-index: 2;

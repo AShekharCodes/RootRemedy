@@ -32,29 +32,30 @@ if ($category) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>RootRemedy - Search</title>
-      <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
-
-  <!-- Custom styles for this template -->
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
 
     <style>
+        h3{
+            color: white;
+        }
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f7f7f7;
+            background-image: url('assets/featured_bg.jpg');
+            background-size: cover;
+
+
         }
         .search-bg {
             position: relative;
             width: 100%;
             height: 300px;
-            background-image: url('assets/featured_bg.jpg');
-            background-size: cover;
-            background-position: center;
         }
         .centered-text {
             text-align: center;
@@ -89,21 +90,53 @@ if ($category) {
             margin: 30px auto;
         }
         .card {
-    background: white;
-    border-radius: 5px;
-    margin: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    background-color: #f9f9f9; /* Light grey for a professional look */
+    border-radius: 8px;
+    margin: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
     overflow: hidden;
     text-align: center;
-    min-height: 300px; /* Set a minimum height for uniform card size */
+    min-height: 320px;
+    padding: 20px;
+    border: 1px solid #e0e0e0; /* Soft border for subtle detail */
 }
 
-        .card:hover {
-            transform: scale(1.05);
-        }
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.card-title {
+    font-size: 1.4em;
+    color: #333333;
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+.card-content {
+    font-size: 1em;
+    color: #666666;
+    line-height: 1.6;
+    padding: 10px 15px;
+}
+
+.card-footer {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+    color: #0073e6; /* Accent color */
+    font-weight: 500;
+    font-size: 0.9em;
+    transition: color 0.3s;
+}
+
+.card-footer:hover {
+    color: #005bb5; /* Darker shade for hover effect */
+}
+
         .card img {
-            max-height: 200px;
+            max-height: 100%;
             width: 100%;
             object-fit: cover;
         }
@@ -114,11 +147,7 @@ if ($category) {
     justify-content: space-between; /* Ensures equal space between elements */
 }
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
+       
         .card-text {
             font-size: 1rem;
             color: #333;
@@ -132,6 +161,10 @@ if ($category) {
     width: 40%; /* Set the width to a larger percentage or fixed value */
 }
 
+    p.text-center{
+        color: white;
+    }
+    
     </style>
 </head>
 
@@ -151,9 +184,6 @@ if ($category) {
         <ul class="navbar-nav">
           <li class="nav-item active">
             <a class="nav-link" href="index.php">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#enquire">Enquire</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about.php">About</a>
