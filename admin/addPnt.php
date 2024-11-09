@@ -58,9 +58,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 include 'db_config.php';
 
-                // Get form data
-                $plant_name = $_POST['plant_name'] ?? '';
-                $plant_properties = $_POST['plant_properties'] ?? '';
+                // Get form data and escape special characters to avoid SQL injection
+                $plant_name = $conn->real_escape_string($_POST['plant_name'] ?? '');
+                $plant_properties = $conn->real_escape_string($_POST['plant_properties'] ?? '');
 
                 // Handle image upload
                 $image1 = $image2 = '';

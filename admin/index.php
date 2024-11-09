@@ -39,7 +39,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/rootremedy/user/index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-seedling"></i>
 
@@ -361,6 +361,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                 fetchData('fetchAyurvedic.php', 'ayurvedicCount');
                                 fetchData('fetchHerbal.php', 'herbalCount');
                                 fetchData('fetchConsultations.php', 'consultationsCount');
+                                fetchData('fetchReslovedConsultations.php', 'ResolvedconsultationsCount');
+                                
                             });
 
                             function fetchData(url, elementId) {
@@ -415,10 +417,18 @@ if (!isset($_SESSION['admin_logged_in'])) {
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Consultation Resolved</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                                    <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Resolved Consultations
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div id="ResolvedconsultationsCount"
+                                                    class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <div class="spinner-border text-warning" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
@@ -459,7 +469,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Pie chart of resources</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Donut chart of resources</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">

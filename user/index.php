@@ -47,9 +47,13 @@ include 'db_config.php';
     <div class="centered-text">
       <h1>Empowering Health with Nature's Remedies</h1>
       <div class="search-bar">
-        <input type="text" placeholder="Search for plants, medicines and diseases..." name="search" class="search-input" />
-        <button type="submit" class="search-button">Search</button>
+        <form action="search.php" method="GET">
+          <input type="text" placeholder="Enter the disease you want remedies for...." name="query" class="search-input" required />
+          <button type="submit" class="search-button">Search</button>
+        </form>
       </div>
+
+
     </div>
 
     <!-- Navbar -->
