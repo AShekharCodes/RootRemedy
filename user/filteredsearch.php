@@ -49,6 +49,7 @@ if ($category) {
             background-color: #f7f7f7;
             background-image: url('assets/featured_bg.jpg');
             background-size: cover;
+            background-attachment: fixed;
 
 
         }
