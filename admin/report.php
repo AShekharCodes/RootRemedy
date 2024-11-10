@@ -21,12 +21,13 @@ function fetchTableData($conn, $table_name) {
 }
 
 // Download data as CSV or Excel
-if (isset($_GET['export'])) {
+if (isset($_GET['export']) && isset($_GET['format'])) {
     $table = $_GET['export'];
+    $format = $_GET['format'];
     $data = fetchTableData($conn, $table);
     $filename = $table . '_report';
 
-    if ($_GET['format'] == 'csv') {
+    if ($format == 'csv') {
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
         $output = fopen('php://output', 'w');
@@ -38,7 +39,7 @@ if (isset($_GET['export'])) {
         }
         fclose($output);
         exit();
-    } elseif ($_GET['format'] == 'excel') {
+    } elseif ($format == 'excel') {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="' . $filename . '.xls"');
         echo '<table border="1">';
@@ -110,10 +111,10 @@ $conn->close();
     <h2 class="text-center mb-4">Root Remedy Database Report</h2>
 
     <!-- Add Plant Table -->
-    <h3>Table: Plants</h3>
+    <h3>Table: Plants Data</h3>
     <div class="download-buttons">
-        <a href="?export=plant&format=csv" class="btn btn-success">Download as CSV</a>
-        <a href="?export=plant&format=excel" class="btn btn-primary">Download as Excel</a>
+        <a href="report.php?export=plant&format=csv" class="btn btn-success">Download as CSV</a>
+        <a href="report.php?export=plant&format=excel" class="btn btn-primary">Download as Excel</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>
@@ -135,10 +136,10 @@ $conn->close();
     </table>
 
     <!-- Add Medicine Table -->
-    <h3>Table: Medicines</h3>
+    <h3>Table: Medicines Data</h3>
     <div class="download-buttons">
-        <a href="?export=medicine&format=csv" class="btn btn-success">Download as CSV</a>
-        <a href="?export=medicine&format=excel" class="btn btn-primary">Download as Excel</a>
+        <a href="report.php?export=medicine&format=csv" class="btn btn-success">Download as CSV</a>
+        <a href="report.php?export=medicine&format=excel" class="btn btn-primary">Download as Excel</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>
@@ -166,10 +167,10 @@ $conn->close();
     </table>
 
     <!-- Add Disease Table -->
-    <h3>Table: Diseases</h3>
+    <h3>Table: Diseases Data</h3>
     <div class="download-buttons">
-        <a href="?export=disease&format=csv" class="btn btn-success">Download as CSV</a>
-        <a href="?export=disease&format=excel" class="btn btn-primary">Download as Excel</a>
+        <a href="report.php?export=disease&format=csv" class="btn btn-success">Download as CSV</a>
+        <a href="report.php?export=disease&format=excel" class="btn btn-primary">Download as Excel</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>
@@ -193,10 +194,10 @@ $conn->close();
     </table>
 
     <!-- User Consultancy Table -->
-    <h3>Table: User Consultancy</h3>
+    <h3>Table: User Consultation Records</h3>
     <div class="download-buttons">
-        <a href="?export=user&format=csv" class="btn btn-success">Download as CSV</a>
-        <a href="?export=user&format=excel" class="btn btn-primary">Download as Excel</a>
+        <a href="report.php?export=user&format=csv" class="btn btn-success">Download as CSV</a>
+        <a href="report.php?export=user&format=excel" class="btn btn-primary">Download as Excel</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>

@@ -68,7 +68,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT plant_id, plant_name FROM plant";
+                $sql = "SELECT plant_id, plant_name FROM plant ORDER BY plant_name ASC";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
@@ -105,7 +105,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT disease_id, disease_name FROM disease";
+                $sql = "SELECT disease_id, disease_name FROM disease ORDER BY disease_name ASC";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
@@ -143,7 +143,7 @@ $selectedOption = isset($_POST['deleteOption']) ? $_POST['deleteOption'] : '';
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT medicine_id, medicine_name, category FROM medicine";
+                $sql = "SELECT medicine_id, medicine_name, category FROM medicine ORDER BY medicine_name ASC";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     $serial = 1;
