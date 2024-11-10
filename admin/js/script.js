@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     report: "report.php",
     fea: "featured.php",
     pri: "privacy.html",
-    use: "user_manual.html"
+    use: "user_manual.html",
+    cpass: "changePass.php",
+    log: "activity_log.php"
   };
 
   // Attach click event to navigation links

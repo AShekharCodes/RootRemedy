@@ -27,6 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $row['password'])) {
             // Set session variables and redirect to dashboard
             $_SESSION['admin_logged_in'] = $email;
+            // Assuming admin login was successful and session variables are set
+$admin_username = $_SESSION['admin_username'];
+$activity = "Logged in";
+$logQuery = "INSERT INTO admin_activity_log (admin_username, activity) VALUES (?, ?)";
+$logStmt = $conn->prepare($logQuery);
+$logStmt->bind_param("ss", $admin_username, $activity);
+$logStmt->execute();
+$logStmt->close();
+
             header("Location: index.php"); // Redirect to dashboard page
             exit();
         } else {

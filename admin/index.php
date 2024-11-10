@@ -136,7 +136,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="#" id="pri">Privacy Policy</a>
                         <a class="collapse-item" href="#" id="use">User Manual</a>
-                        <a class="collapse-item" href="forgot-password.html">Change Password</a>
+                        <a class="collapse-item" href="#" id="cpass">Change Password</a>
                         <div class="collapse-divider"></div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="#" id="log">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
                                 </a>
