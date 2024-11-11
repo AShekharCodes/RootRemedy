@@ -93,13 +93,13 @@ if ($category) {
         .card {
     background-color: #f9f9f9; /* Light grey for a professional look */
     border-radius: 8px;
-    margin: 20px;
+    margin: 5px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
     transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
     overflow: hidden;
-    text-align: center;
+    text-align: left;
     min-height: 320px;
-    padding: 20px;
+    padding: 0px;
     border: 1px solid #e0e0e0; /* Soft border for subtle detail */
 }
 
@@ -123,8 +123,8 @@ if ($category) {
 }
 
 .card-footer {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 5px;
+    padding: 2px;
     border-top: 1px solid #e0e0e0;
     color: #0073e6; /* Accent color */
     font-weight: 500;
@@ -145,7 +145,6 @@ if ($category) {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures equal space between elements */
 }
 
        
