@@ -1,56 +1,41 @@
 <?php
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Start session or initialize message variable
+$message = '';
 
-// Database connection
-include 'db_config.php';
-
-$message = "";
-
+// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $type = $_POST['type'];
+    // Database connection
+    $conn = new mysqli("localhost", "root", "", "rootremedy");
 
-    // Handling image upload
-    $image = null;
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Get form data
+    $title = $conn->real_escape_string($_POST['title']);
+    $description = $conn->real_escape_string($_POST['description']);
+    $type = $conn->real_escape_string($_POST['type']);
+    
+    // Process uploaded image
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image = file_get_contents($_FILES['image']['tmp_name']);
-    }
-
-    // Check if entry with the same type already exists
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM featured WHERE type = ?");
-    $stmt->bind_param("s", $type);
-    $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($count > 0) {
-        // Update existing entry
-        $stmt = $conn->prepare("UPDATE featured SET title = ?, description = ?, image = ? WHERE type = ?");
-        $stmt->bind_param("ssbs", $title, $description, $image, $type);
-        if ($stmt->execute()) {
-            $message = "<div id='success-message' class='alert alert-success'>Featured item updated successfully!</div>";
-        } else {
-            $message = "<div class='alert alert-danger'>Error updating item: " . $stmt->error . "</div>";
-        }
+        $image = $conn->real_escape_string($image);
     } else {
-        // Insert new entry if it doesn't exist
-        $stmt = $conn->prepare("INSERT INTO featured (title, description, image, type) VALUES (?, ?, ?, ?)");
-        // Use bind_param to insert image as BLOB
-        $stmt->bind_param("ssbs", $title, $description, $image, $type);
-
-        if ($stmt->execute()) {
-            $message = "<div id='success-message' class='alert alert-success'>New featured item added successfully!</div>";
-        } else {
-            $message = "<div class='alert alert-danger'>Error inserting item: " . $stmt->error . "</div>";
-        }
+        $message = '<div class="alert alert-danger">Failed to upload image.</div>';
+        exit;
     }
 
-    // Close the statement and connection
-    $stmt->close();
+    // Insert data into the database
+    $sql = "INSERT INTO featured (title, description, image, type) VALUES ('$title', '$description', '$image', '$type')";
+    
+    if ($conn->query($sql) === TRUE) {
+        $message = '<div class="alert alert-success">Data inserted successfully.</div>';
+    } else {
+        $message = '<div class="alert alert-danger">Error: ' . $conn->error . '</div>';
+    }
+
+    // Close connection
     $conn->close();
 }
 ?>
@@ -125,16 +110,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // JavaScript to hide the success message after 3 seconds
-    document.addEventListener("DOMContentLoaded", function() {
-        const successMessage = document.getElementById("success-message");
-        if (successMessage) {
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000); // 3000 milliseconds = 3 seconds
-        }
-    });
-</script>
 </body>
 </html>

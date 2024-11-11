@@ -69,7 +69,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     // Step 1: Generate a new combination_id
                     $combinationStmt = $conn->prepare("INSERT INTO combination (combination_id) VALUES (NULL)");
                     $combinationStmt->execute();
-                    $combination_id = $conn->lastInsertId(); // Get the newly generated combination_id
+                    $combination_id = $conn->lastInsertId();
 
                     // Step 2: Insert selected plants into the combination_plants table
                     $selectedPlants = $_POST['plant_ids'];
@@ -81,7 +81,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                         ]);
                     }
 
-                    // Step 3: Insert the new medicine details into the addMed table
+                    // Step 3: Insert the new medicine details into the medicine table
                     $stmt = $conn->prepare("INSERT INTO medicine 
                         (medicine_name, disease_id, preparation_method, how_to_take, category, combination_id) 
                         VALUES (:medicine_name, :disease_id, :preparation_method, :how_to_take, :category, :combination_id)");
@@ -97,7 +97,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
                     echo "<div class='alert alert-success text-center'>New medicine details added successfully!</div>";
                 } catch (PDOException $e) {
-                    // Debugging: Display error message
                     error_log("Database query failed: " . $e->getMessage());
                     echo "<div class='alert alert-danger text-center'>Error: " . $e->getMessage() . "</div>";
                 }
