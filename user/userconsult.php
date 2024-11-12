@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Database connection
 $servername = "localhost"; // or your server name
 $username = "root"; // your database username
@@ -27,14 +28,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$name', '$email', '$phone_number', '$subject', '$message', 'pending')";
 
     if ($conn->query($sql) === TRUE) {
-        // Redirect to form.php with success status
-        header("Location: index.php?status=success");
+        // Set session message for success
+        $_SESSION['message'] = 'success';
     } else {
-        // Redirect to form.php with error status
-        header("Location: index.php?status=error");
+        // Set session message for error
+        $_SESSION['message'] = 'error';
     }
-}
 
-// Close the database connection
-$conn->close();
+    // Close the database connection
+    $conn->close();
+
+    // Redirect to the form page
+    header("Location: index.php"); // Change this to your actual form page
+    exit();
+}
 ?>

@@ -1,9 +1,6 @@
-<?php include 'getfeatured.php'; ?>
 <?php
-$status = '';
-if (isset($_GET['status'])) {
-  $status = $_GET['status'];
-}
+session_start();
+include 'getfeatured.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -153,18 +150,20 @@ if (isset($_GET['status'])) {
       <div class="heading_container">
         <h2>Enquire</h2>
       </div>
+      <?php if (isset($_SESSION['message'])): ?>
+        <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
+          <?php if ($_SESSION['message'] == 'success'): ?>
+            Your message has been sent successfully!
+          <?php elseif ($_SESSION['message'] == 'error'): ?>
+            There was an error sending your message. Please try again.
+          <?php endif; ?>
+        </div>
+        <?php unset($_SESSION['message']); ?>
+      <?php endif; ?>
+
       <div class="row">
         <div class="col-md-12">
           <div class="form_container contact-form">
-            <?php if ($status == 'success'): ?>
-              <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                Your message has been sent successfully!
-              </div>
-            <?php elseif ($status == 'error'): ?>
-              <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-                There was an error sending your message. Please try again.
-              </div>
-            <?php endif; ?>
             <form action="userconsult.php" method="POST">
               <div class="form-row">
                 <div class="col-lg-6">
@@ -257,15 +256,18 @@ if (isset($_GET['status'])) {
 
         <div class="col-md-6 col-lg-3 footer_col">
           <h4>Newsletter</h4>
-          <?php if ($status == 'success'): ?>
+          <?php if (isset($_SESSION['message'])): ?>
             <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-              Subscribed!
+              <?php if ($_SESSION['message'] == 'success'): ?>
+                Subscribed!
+              <?php elseif ($_SESSION['message'] == 'error'): ?>
+                Unable to subscribe.
+              <?php endif; ?>
             </div>
-          <?php elseif ($status == 'error'): ?>
-            <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-              Unable to Subscribe.
-            </div>
+            <?php unset($_SESSION['message']); ?>
           <?php endif; ?>
+
+
           <form action="subscribe.php" method="POST">
             <input type="email" name="subscribers" placeholder="Enter email" required />
             <button type="submit">Subscribe</button>
