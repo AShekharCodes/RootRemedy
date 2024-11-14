@@ -104,6 +104,13 @@ a:focus {
   overflow: hidden;
 }
 
+.nav_and_bg_search {
+  background-image: url(../assets/featured_bg2.jpg);
+  position: relative;
+  height: 40vh;
+  overflow: hidden;
+}
+
 .centered-text {
   position: absolute;
   top: 50%;
@@ -129,8 +136,8 @@ a:focus {
   height: 100vh;
 }
 
-.search-bar {
-  margin-top: 20px;
+.search-form {
+  margin-top: 30px;
   display: flex;
 }
 
@@ -317,7 +324,8 @@ a:focus {
 }
 
 .featured_section {
-  background-color: #4caf50;
+  background-image: url(../assets/featured_bg2.jpg);
+  object-fit: cover;
 }
 
 .featured_section .box .img-box {
@@ -338,8 +346,21 @@ a:focus {
 }
 
 .result-section {
-  padding: 20px;
-  height: 50vh;
+  background-image: url(../assets/featured_bg2.jpg);
+  padding: 30px;
+}
+
+.result-section h2,
+.result-section h3 {
+  color: white;
+  text-align: center;
+}
+
+.card-body h3 {
+  color: black;
+}
+
+.card-body {
   background-color: lightgreen;
 }
 

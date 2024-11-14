@@ -1,7 +1,9 @@
 <?php
 session_start();
 include 'getfeatured.php';
-?>
+include 'db_config.php'
+  ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -38,11 +40,11 @@ include 'getfeatured.php';
     <!-- Centered Text -->
     <div class="centered-text">
       <h1>Empowering Health with Nature's Remedies</h1>
-      <div class="search-bar">
-        <input type="text" placeholder="Search for plants, medicines and diseases..." name="search"
-          class="search-input" />
+      <form class="search-form" action="search.php" method="GET">
+        <input type="text" placeholder="Enter the disease you want remedies for..." name="query" class="search-input"
+          required />
         <button type="submit" class="search-button">Search</button>
-      </div>
+      </form>
     </div>
 
     <!-- Navbar -->
@@ -148,18 +150,22 @@ include 'getfeatured.php';
   <section id="enquire" class="contact_section layout_padding">
     <div class="container">
       <div class="heading_container">
-        <h2>Enquire</h2>
+        <h2>Request Consultancy</h2>
       </div>
-      <?php if (isset($_SESSION['message'])): ?>
-        <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-          <?php if ($_SESSION['message'] == 'success'): ?>
-            Your message has been sent successfully!
-          <?php elseif ($_SESSION['message'] == 'error'): ?>
-            There was an error sending your message. Please try again.
-          <?php endif; ?>
-        </div>
-        <?php unset($_SESSION['message']); ?>
+      <?php if (isset($_GET['status'])): ?>
+        <?php if ($_GET['status'] == 'userconsult_success'): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Your enquiry has been submitted successfully!
+
+          </div>
+        <?php elseif ($_GET['status'] == 'userconsult_error'): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            There was an error submitting your enquiry. Please try again later.
+
+          </div>
+        <?php endif; ?>
       <?php endif; ?>
+
 
       <div class="row">
         <div class="col-md-12">
@@ -256,15 +262,18 @@ include 'getfeatured.php';
 
         <div class="col-md-6 col-lg-3 footer_col">
           <h4>Newsletter</h4>
-          <?php if (isset($_SESSION['message'])): ?>
-            <div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
-              <?php if ($_SESSION['message'] == 'success'): ?>
+          <?php if (isset($_GET['status'])): ?>
+            <?php if ($_GET['status'] == 'subscribe_success'): ?>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Subscribed!
-              <?php elseif ($_SESSION['message'] == 'error'): ?>
-                Unable to subscribe.
-              <?php endif; ?>
-            </div>
-            <?php unset($_SESSION['message']); ?>
+
+              </div>
+            <?php elseif ($_GET['status'] == 'subscribe_error'): ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Could not subscribe!
+
+              </div>
+            <?php endif; ?>
           <?php endif; ?>
 
 

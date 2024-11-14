@@ -1,18 +1,5 @@
 <?php
-session_start();
-// Database connection
-$servername = "localhost"; // or your server name
-$username = "root"; // your database username
-$password = ""; // your database password
-$dbname = "rootremedy"; // your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db_config.php';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,22 +11,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = mysqli_real_escape_string($conn, $_POST['message']);
 
     // SQL query to insert data with default 'pending' status
-    $sql = "INSERT INTO userconsult (name, email, phone_number, subject, message, status)
+    $sql = "INSERT INTO user (name, email, phone_number, subject, message, status)
             VALUES ('$name', '$email', '$phone_number', '$subject', '$message', 'pending')";
 
     if ($conn->query($sql) === TRUE) {
-        // Set session message for success
-        $_SESSION['message'] = 'success';
+        // Redirect to index.php with success status for the enquiry
+        header("Location: index.php?status=userconsult_success");
     } else {
-        // Set session message for error
-        $_SESSION['message'] = 'error';
+        // Redirect to index.php with error status for the enquiry
+        header("Location: index.php?status=userconsult_error");
     }
-
-    // Close the database connection
-    $conn->close();
-
-    // Redirect to the form page
-    header("Location: index.php"); // Change this to your actual form page
-    exit();
 }
+
+// Close the database connection
+$conn->close();
 ?>

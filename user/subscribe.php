@@ -1,36 +1,28 @@
 <?php
-session_start();
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rootremedy";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db_config.php';
 
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $subscriber = $_POST['subscribers'];
+    // Get the email from the form input
+    $subscriber = mysqli_real_escape_string($conn, $_POST['subscribers']);
 
+    // Prepare an SQL statement to prevent SQL injection
     $stmt = $conn->prepare("INSERT INTO subscriptions (subscribers) VALUES (?)");
     $stmt->bind_param("s", $subscriber);
 
+    // Execute the statement
     if ($stmt->execute()) {
-        $_SESSION['message'] = 'success';
+        // Redirect to index.php with success status for the subscription
+        header("Location: index.php?status=subscribe_success");
     } else {
-        $_SESSION['message'] = 'error';
+        // Redirect to index.php with error status for the subscription
+        header("Location: index.php?status=subscribe_error");
     }
 
+    // Close the statement
     $stmt->close();
-    $conn->close();
-
-    // Redirect to clear form resubmission and remove URL parameters
-    header("Location: index.php");
-    exit();
 }
+
+// Close the database connection
+$conn->close();
+?>
