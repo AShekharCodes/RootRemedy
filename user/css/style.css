@@ -498,11 +498,11 @@ a:focus {
   height: 175px;
 } */
 
-.about-section h6 {
-  padding: 20px 40px;
+.about-section {
+  padding: 30px;
   font-size: 18px;
-  background-color: lightgreen;
-  margin: 0;
+  background-image: url(../assets/featured_bg2.jpg);
+  color: white;
 }
 
 .contact_section .form_container button {

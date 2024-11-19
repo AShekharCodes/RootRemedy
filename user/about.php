@@ -76,17 +76,8 @@ if (isset($_GET['status'])) {
         </nav>
     </div>
     <div class="about-section">
-        <h6>A knowledge-based system of indigenous medicines is established to ease the querying and
-            application of medicine knowledge that is commonly available in North East India. Using the
-            Object Oriented Programming language, Model View Controller development model, and
-            integrated development environment, we propose a client-server-based architecture system for the betterment
-            of the society.
-
-            We call it as RootRemedy To enable the query of original indigenous medicine information, a hierarchical
-            query based system was created considering load balancing cluster-based web server. The
-            HKIMed offers a fresh approach to querying indigenous medical knowledge, assisting users in
-            comprehending and gaining information of medicine for specific diseases.
-        </h6>
+        <h2>About Us</h2>
+        <p>Add relevant about section details</p>
     </div>
 
     <footer class="footer_section">
