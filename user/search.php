@@ -137,12 +137,12 @@ if (isset($_GET['query']) && !empty(trim($_GET['query']))) {
         <?php if (!empty($errorMessage)): ?>
             <p class="alert alert-danger"><?php echo $errorMessage; ?></p>
         <?php else: ?>
-            <h2>Search Results for "<?php echo htmlspecialchars($searchQuery); ?>"</h2>
+            <h2 class="result-caption">Search Results for "<?php echo htmlspecialchars($searchQuery); ?>"</h2>
 
             <?php if (!empty($disease)): ?>
-                <div class="card mb-4 col-md-10 mx-auto">
+                <h3>Disease Details</h3>
+                <div class="disease-card card mb-4 col-md-10 mx-auto">
                     <div class="card-body">
-                        <h3>Disease Details</h3>
                         <h4><?php echo htmlspecialchars($disease['disease_name']); ?></h4>
                         <p><strong>Properties:</strong> <?php echo htmlspecialchars($disease['properties']); ?></p>
                         <p><strong>Symptoms:</strong> <?php echo htmlspecialchars($disease['symptoms']); ?></p>
@@ -154,7 +154,7 @@ if (isset($_GET['query']) && !empty(trim($_GET['query']))) {
                     <div class="card-section mb-4">
                         <h3>Medicines</h3>
                         <?php foreach ($medicines as $medicine): ?>
-                            <div class="card mb-3 col-md-10 mx-auto">
+                            <div class="medicine-card card mb-3 col-md-10 mx-auto">
                                 <div class="card-body">
                                     <h4><?php echo htmlspecialchars($medicine['medicine_name']); ?></h4>
                                     <p><strong>Preparation Method:</strong>
@@ -180,8 +180,8 @@ if (isset($_GET['query']) && !empty(trim($_GET['query']))) {
                                             <h4><?php echo htmlspecialchars($plant['plant_name']); ?></h4>
                                             <p><strong>Properties:</strong> <?php echo htmlspecialchars($plant['plant_properties']); ?>
                                             </p>
-                                            <?php if (!empty($plant['image'])): ?>
-                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($plant['image']); ?>"
+                                            <?php if (!empty($plant['image1'])): ?>
+                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($plant['image1']); ?>"
                                                     alt="Plant Image" class="img-fluid">
                                             <?php endif; ?>
                                         </div>
@@ -197,7 +197,7 @@ if (isset($_GET['query']) && !empty(trim($_GET['query']))) {
 
             <!-- No Results Found -->
             <?php if (empty($disease) && empty($medicines) && empty($plants)): ?>
-                <p>No results found for "<?php echo htmlspecialchars($searchQuery); ?>"</p>
+                <h2>No results found for "<?php echo htmlspecialchars($searchQuery); ?>"</h2>
             <?php endif; ?>
         <?php endif; ?>
     </div>
